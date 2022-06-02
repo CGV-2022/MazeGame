@@ -63,7 +63,7 @@ export class Enemy {
         if (distance < 15 && this.isAttacking==false) {
             play = 'Walk';
         } 
-        if (distance <= 2 || this.isAttacking==true) {
+        if (distance <= 2.5 || this.isAttacking==true) {
             play = 'Slash';
             this.isAttacking=true;
         } 
