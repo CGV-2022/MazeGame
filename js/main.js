@@ -11,8 +11,8 @@ document.getElementById("0").addEventListener("click", (event) => {
 }, false);
 
 //go straight to certain level without having to go through menu
-//removeMenu();
-//Level0();
+removeMenu();
+Level0();
 
 //need to add the menu items back when player exits level
 function generateMenu() {
