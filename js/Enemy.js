@@ -51,7 +51,7 @@ export class Enemy {
 
     update(world, delta, player) {
         var distance = this.model.position.distanceTo(player.model.position);
-        if (player.isAttacking && distance < 2 && this.onHit == false) {
+        if (player.isAttacking && player.animTimer >= 0.35 && player.animTimer <= 0.45 && distance <= 2 && this.onHit == false) {
             this.onHit=true;
             this.onHitCounter = this.onHitCounter + 1;
         }
@@ -63,7 +63,7 @@ export class Enemy {
         if (distance < 15 && this.isAttacking==false) {
             play = 'Walk';
         } 
-        if (distance < 3 || this.isAttacking==true) {
+        if (distance <= 2 || this.isAttacking==true) {
             play = 'Slash';
             this.isAttacking=true;
         } 

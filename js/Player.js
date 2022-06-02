@@ -63,7 +63,7 @@ export class Player {
 
     update(world, delta, keysPressed, enemy) {
         var distance = this.model.position.distanceTo(enemy.model.position);
-        if (enemy.isAttacking && distance <= 3 && this.onHit == false && this.ImSoUnstoppable==false) {
+        if (enemy.isAttacking && enemy.animTimer >= 0.55 && enemy.animTimer <= 0.65 && distance <= 3 && this.onHit == false && this.ImSoUnstoppable==false) {
             this.onHit=true;
             this.onHitCounter = this.onHitCounter + 1;
             this.invincTimer = this.invincCooldown;                        //give player 5 seconds of invincibility after getting clapped
