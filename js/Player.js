@@ -5,6 +5,7 @@ export class Player {
     //3D WORLD
     orbitControl;
     camera;
+    firstPerson = false;
     model;
     mixer;
     animationsMap = new Map(); // Walk, Run, Punch, OnHit, Death, Idle
@@ -59,7 +60,6 @@ export class Player {
         this.rayFloor = rayFloor;
         this.rayWall = rayWall;
     }
-
 
     update(world, delta, keysPressed, enemy) {
         var distance = this.model.position.distanceTo(enemy.model.position);
@@ -278,7 +278,12 @@ export class Player {
 
         //update camera target
         this.cameraTarget.x = this.model.position.x;
-        this.cameraTarget.y = this.model.position.y + 1;
+        if (this.firstPerson) {
+            this.cameraTarget.y = this.model.position.y + 1.5;
+        }
+        else {
+            this.cameraTarget.y = this.model.position.y + 1;
+        }  
         this.cameraTarget.z = this.model.position.z;
         this.orbitControl.target = this.cameraTarget;
     }
