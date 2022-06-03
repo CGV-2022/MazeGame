@@ -1,4 +1,10 @@
 (function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
+
+import {EffectComposer} from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/EffectComposer.js';
+import {RenderPass} from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/RenderPass.js';
+import {OutlinePass} from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/OutlinePass.js';
+import {GlitchPass} from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/GlitchPass.js';
+
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.module.js';
 import RAPIER from 'https://cdn.skypack.dev/@dimforge/rapier3d-compat';
 import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/controls/OrbitControls.js';
@@ -66,6 +72,7 @@ function Level0Init() {
     ]);
     scene.background = texture;
 
+
     //CAMERA
     const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
     camera.position.set(0, 5, 6);                                //player
@@ -86,10 +93,26 @@ function Level0Init() {
     orbitControls.enablePan = false;                             //and set
     orbitControls.maxPolarAngle = Math.PI/1.9;                   //player rigid body
     orbitControls.minDistance = 6;                               //at origin    
-    orbitControls.maxDistance = 6;                               //for level editing       
-                                 
-                       
+    orbitControls.maxDistance = 6;                               //for level editing                
     orbitControls.update();
+
+    
+    //MINIMAP
+    const camera2 = new THREE.OrthographicCamera(-10, 10, 10, -10, 0, 100);
+    camera2.position.set(0, 20, 0);
+    camera2.lookAt(0, 0, 0);
+    const renderer2 = new THREE.WebGLRenderer();
+    renderer2.setSize(200, 200);
+    renderer2.domElement.style.position = 'absolute';
+    renderer2.domElement.style.top = '70%';
+    renderer2.domElement.style.left = '85%';
+
+    const composer = new EffectComposer(renderer2);
+    const renderPass = new RenderPass(scene, camera2);
+    composer.addPass(renderPass);
+    const glitchPass = new GlitchPass();
+    composer.addPass(glitchPass);
+
 
     //LIGHTS
     mainLighting();
@@ -247,7 +270,7 @@ function Level0Init() {
         const manager = new THREE.LoadingManager();
         manager.onLoad = function() { //when all animations have been loaded
             //pass model, mixer and animations to character controller
-            player = new Player(model, mixer, animationsMap, orbitControls, camera, rigidBody, 
+            player = new Player(model, mixer, animationsMap, orbitControls, camera, camera2, rigidBody, 
                 new RAPIER.Ray( 
                     rigidBody.translation(),
                     { x: 0, y: -1, z: 0} 
@@ -458,9 +481,11 @@ function Level0Init() {
         
         orbitControls.update();
         renderer.render(scene, camera);
+        composer.render();
         requestAnimationFrame(animate);
     }
     document.body.appendChild(renderer.domElement);
+    document.body.appendChild(renderer2.domElement);
     animate();
 
 
@@ -470,7 +495,7 @@ function Level0Init() {
     function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setSize(window.innerWidth, window.innerHeight);        
     }
     window.addEventListener('resize', onWindowResize);
 
