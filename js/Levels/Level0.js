@@ -83,10 +83,12 @@ function Level0Init() {
     //CONTROLS
     const orbitControls = new OrbitControls(camera, renderer.domElement);
     orbitControls.enableDamping = true;                          //leave commented
-    orbitControls.minDistance = 6;                               //and set
-    orbitControls.maxDistance = 6;                               //player rigid body
-    orbitControls.enablePan = false;                             //at origin
-    orbitControls.maxPolarAngle = Math.PI/1.9;                   //for level editing
+    orbitControls.enablePan = false;                             //and set
+    orbitControls.maxPolarAngle = Math.PI/1.9;                   //player rigid body
+    orbitControls.minDistance = 6;                               //at origin    
+    orbitControls.maxDistance = 6;                               //for level editing       
+                                 
+                       
     orbitControls.update();
 
     //LIGHTS
@@ -169,7 +171,7 @@ function Level0Init() {
     //texture
     const textureLoader = new THREE.TextureLoader();
     const brick = textureLoader.load("./resources/textures/walls/brick_medieval.jpg");
-    const materialWall = new THREE.MeshStandardMaterial({ map: brick });
+    const materialWall = new THREE.MeshStandardMaterial({ map: brick, side: THREE.DoubleSide });
     wrapAndRepeatTextureWall(materialWall.map);
 
     //maze walls
@@ -364,6 +366,29 @@ function Level0Init() {
         keyDisplayQueue.up(event.key);                 
         keysPressed[event.key.toLowerCase()] = false;  
 
+    }, false);
+
+    //3RD AND 1ST PERSON
+    var firstPerson = false;
+    document.addEventListener('keypress', (event) => {
+        if (event.key.toLowerCase()=='t' && player) {
+            firstPerson = !firstPerson;
+
+            if(firstPerson==true) {
+                camera.position.set(player.model.position.x, player.model.position.y + 2.5, player.model.position.z);
+                orbitControls.minDistance=0;
+                orbitControls.maxDistance=0.6;
+                player.firstPerson=true;
+                
+            }
+            else {
+                camera.position.set(0, 5, 6);
+                orbitControls.minDistance=6;
+                orbitControls.maxDistance=6; 
+                player.firstPerson=false;
+            }
+        }
+        
     }, false);
 
 
