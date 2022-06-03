@@ -5,6 +5,7 @@ export class Player {
     //3D WORLD
     orbitControl;
     camera;
+    camera2;
     firstPerson = false;
     model;
     mixer;
@@ -43,9 +44,10 @@ export class Player {
     lerp = (x, y, a) => x * (1 - a) + y * a;
 
 
-    constructor(model, mixer, animationsMap, orbitControl, camera, rigidBody, rayFloor, rayWall) {
+    constructor(model, mixer, animationsMap, orbitControl, camera, camera2, rigidBody, rayFloor, rayWall) {
         this.orbitControl = orbitControl;
         this.camera = camera;
+        this.camera2 = camera2;
 
         this.model = model;
         this.mixer = mixer;
@@ -286,6 +288,9 @@ export class Player {
         }  
         this.cameraTarget.z = this.model.position.z;
         this.orbitControl.target = this.cameraTarget;
+
+        this.camera2.position.set(this.model.position.x, 10, this.model.position.z);
+        this.camera2.lookAt(this.model.position.x, this.model.position.y, this.model.position.z);
     }
 
 

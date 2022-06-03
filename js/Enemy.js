@@ -145,7 +145,7 @@ export class Enemy {
 
         this.walkDirection = new THREE.Vector3(0, 0, 1);
         var velocity = 0;
-        if (this.currentAction=='Walk' || this.currentAction=='Idle') {
+        if (this.currentAction=='Walk' || this.currentAction=='Idle' || this.currentAction=='Slash') {
             //rotate model
             var angleYPlayerDirection = Math.atan2(
             (player.model.position.x - this.model.position.x), 
