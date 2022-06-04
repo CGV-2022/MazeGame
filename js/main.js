@@ -41,7 +41,13 @@ function closePopup(){
 document.getElementById("closePopup").addEventListener("click", (event) => {
     closePopup();
     Level0();
-    
+
+}, false);
+
+document.getElementById("3").addEventListener("click", (event) => {
+    removeMenu();
+    Level3();
+
 }, false);
 
 
