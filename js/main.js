@@ -54,15 +54,15 @@ document.getElementById("3").addEventListener("click", (event) => {
 
 
 document.getElementById("btnMainP").onclick = function () {
-    location.href = "credits.html";
+    location.href = "index.html";
 };
 
 document.getElementById("btnMainL").onclick = function () {
-    location.href = "credits.html";
+    location.href = "index.html";
 };
 
 document.getElementById("btnMainW").onclick = function () {
-    location.href = "credits.html";
+    location.href = "index.html";
 };
 
 
