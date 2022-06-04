@@ -23,14 +23,14 @@ export function Level0(){
 }
 function Level0Init() {
     //INIT UI ELEMENTS
-    var ps = document.getElementById('Pause');
-    ps.textContent = "";
+    var ps = document.getElementById('Pause1');
+    //ps.textContent = "";
     var lt = document.getElementById('LevelTimer');
     lt.textContent = "";
-    const dub = document.getElementById('Win');
-    dub.textContent = "";
-    const loss = document.getElementById('Lose');
-    loss.textContent = "";
+    const dub = document.getElementById('Win1');
+    //dub.textContent = "";
+    const loss = document.getElementById('Lose1');
+    //loss.textContent = "";
 
 
     //TIMER
@@ -425,13 +425,17 @@ function Level0Init() {
             if(paused) {
                 stopLevelTimer();
                 clock.stop();
-                ps.textContent="PAUSED";
+                ps.style.display = 'flex';
+                
+               
+                //ps.textContent="PAUSED";
                 
             }
             else {
                 startLevelTimer();
                 clock.start();
-                ps.textContent="";
+                ps.style.display = 'none';
+                //ps.textContent="";
             }
         }
         
@@ -449,7 +453,7 @@ function Level0Init() {
 
                 if(enemy.death==true) {                                          //if player kills enemy, they win and are invincible
                     stopLevelTimer();
-                    dub.textContent = "YOU WIN!";
+                    dub.style.display = 'flex';
 
                     player.win = true;
                 }
@@ -457,7 +461,7 @@ function Level0Init() {
                     stopLevelTimer();
                     player.death=true; //if timer runs out need to do this
 
-                    loss.textContent = 'YOU DIED';
+                    loss.style.display = 'flex';
                 }
 
                 //if spawn point must change when player reaches a certain location
