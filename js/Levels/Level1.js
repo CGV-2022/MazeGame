@@ -583,6 +583,21 @@ function Level1Init() {
     moonMesh.position.set(50,30,40);
     sky.add(moonMesh);
 
+    //planet
+    const planetLoad = new THREE.TextureLoader();
+    //planet image load
+    const planetTexture = planetLoad.load('Resources/textures/sphere/galaxy.jpeg');
+    //planet size
+    const planetGeom = new THREE.SphereGeometry(6, 32, 32);
+    //sphere material
+    const planetMat = new THREE.MeshStandardMaterial({ map: planetTexture });
+    //creation on planet
+    var Planet = new THREE.Mesh(planetGeom, planetMat);
+    Planet.position.set(20,25, -35);
+    Planet.castShadow = true;
+    //added to sky to be able to rotate with skybox
+    sky.add(Planet);
+
 
     //WHAT HAPPENS ON EACH UPDATE
     function animate() {
@@ -773,7 +788,7 @@ function Level1Init() {
 
         //setting featurre position
         water.position.y = 0.2;
-        water.position.x = -8;
+        water.position.x = -7;
         water.position.z = 30;
         water.rotation.x = Math.PI * - 0.5;
         
