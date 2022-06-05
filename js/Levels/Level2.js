@@ -767,7 +767,7 @@ function Level2Init() {
         bodyDesc.setCanSleep(true);
         bodyDesc.setTranslation(meshWall.position.x, meshWall.position.y, meshWall.position.z);
         const rigidBody = world.createRigidBody(bodyDesc);
-        var collider = RAPIER.ColliderDesc.cuboid(wallSize.x*0.5, wallSize.y*0.5, wallSize.z*0.5);
+        var collider = RAPIER.ColliderDesc.cuboid(wallSize.x*0.7, wallSize.y*0.7, wallSize.z*0.7);
         world.createCollider(collider, rigidBody);
     }
 

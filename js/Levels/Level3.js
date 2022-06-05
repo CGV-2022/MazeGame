@@ -34,7 +34,7 @@ function Level3Init() {
 
 
     //TIMER
-    var timeLeft = 90;
+    var timeLeft = 180;
     var str = "Time remaining: " + timeLeft;
     lt.textContent = str;
 
@@ -236,22 +236,28 @@ function Level3Init() {
 
 
     //Torches
-    /*var torchModel;
+    var torchModel;
 
     const managerTorch = new THREE.LoadingManager();
-    managerTorch.onLoad = function() { //when torch model has been loaded. Can clone a bunch of torches in here
-        //torch(new THREE.Vector3(0, 5, 30.5));
-        //torch(new THREE.Vector3(0, 5, 40));
+    managerTorch.onLoad = function() { 
+        //when torch model has been loaded. Can clone a bunch of torches in here
+        //ading torches to walls
+        torch(new THREE.Vector3(-12, 5, 31));
+        torch(new THREE.Vector3(-9, 5, 31));
+        torch(new THREE.Vector3(-9, 5, -8));
+        torch(new THREE.Vector3(15, 5, -25));
+        torch(new THREE.Vector3(15, 5, 38));
+        
     }
 
     const loaderTorch = new FBXLoader(managerTorch);
     loaderTorch.setPath('./Resources/models/Torch/');
     loaderTorch.load('Torch.fbx', (fbx) => {
-      const model = fbx;
-      fbx.scale.setScalar(0.02);
+    const model = fbx;
+    fbx.scale.setScalar(0.02);
 
-      torchModel = model;
-    });*/
+    torchModel = model;
+    });
 
 
 
@@ -643,17 +649,18 @@ function Level3Init() {
     scene.add(camera);
 
     //TORCHES
-    function torch(lightPos) {
-        //mesh
-        var model = torchModel.clone();
-        model.position.set(lightPos.x, lightPos.y - 1, lightPos.z);
-        //model.position.set(0, 4, 30);
-        scene.add(model);
+   //The light emitted from the torch
+   function torch(lightPos) 
+   {
+    //mesh
+    var model = torchModel.clone();
+    model.position.set(lightPos.x, lightPos.y, lightPos.z);
+    scene.add(model);
 
-        //light
-        const light = new THREE.PointLight('orange', 1, 10, 2);
-        light.castShadow = true;
-        light.position.copy(lightPos);
-        scene.add(light);
-    }
+     //light colour and intensity
+    const light = new THREE.PointLight('orange', 6, 10, 2);
+    light.castShadow = true;
+    light.position.copy(lightPos);
+    scene.add(light); 
+    } 
 }
