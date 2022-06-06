@@ -369,7 +369,7 @@ function Level1Init() {
 
         //rigid body                                                               
         //player initial position
-        var bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(40, 0.9, 40);
+        var bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(20, 0.9, 30);
         const q = new THREE.Quaternion().setFromEuler( new THREE.Euler(0, model.rotation.y, 0, 'XYZ') );
         bodyDesc.setRotation({ x: q.x, y: q.y, z: q.z, w: q.w });
         var rigidBody = world.createRigidBody(bodyDesc);
@@ -524,7 +524,7 @@ function Level1Init() {
             else {
                 camera.position.set(0, 5, 6);
                 orbitControls.minDistance=6;
-                orbitControls.maxDistance=6; 
+                orbitControls.maxDistance=7; 
                 player.firstPerson=false;
             }
         }
@@ -595,7 +595,7 @@ function Level1Init() {
     const planetMat = new THREE.MeshStandardMaterial({ map: planetTexture });
     //creation on planet
     var Planet = new THREE.Mesh(planetGeom, planetMat);
-    Planet.position.set(20,25, -35);
+    Planet.position.set(-30,25, -50);
     Planet.castShadow = true;
     //added to sky to be able to rotate with skybox
     sky.add(Planet);
