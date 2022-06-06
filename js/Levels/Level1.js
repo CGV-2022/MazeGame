@@ -439,6 +439,7 @@ function Level1Init() {
         });
         scene.add(model);
 
+
         //rigid body                                                                
         //enemy initial position
         var bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(-10, 0.5, -10);
@@ -526,6 +527,11 @@ function Level1Init() {
                 orbitControls.maxDistance=6; 
                 player.firstPerson=false;
             }
+        }
+
+        if (event.key.toLowerCase()=='r' && player) {
+            
+            
         }
     }, false);
 

@@ -222,6 +222,7 @@ body {
   }
   
   .popup .heading{
+    margin-top: 45px;
     color: darkgoldenrod;
     text-align: center;
     font-size: 30px;
@@ -246,7 +247,7 @@ body {
     height: 500px;
     z-index: 1;
     text-align: center;
-    padding: 5px;
+    padding: 10px;
     box-sizing: border-box;
     border-radius: 10px;
   }
