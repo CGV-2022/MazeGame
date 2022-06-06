@@ -276,52 +276,40 @@ function Level2Init() {
     var colliderCyl = RAPIER.ColliderDesc.cylinder(1*0.5, 20);
     world.createCollider(colliderCyl, rigidCyl);
 
-    //falling ball
-    //mesh
-    // const ballGeom = new THREE.SphereGeometry(1, 32, 32);
-    // const ballMat = new THREE.MeshStandardMaterial({ color: 'red' });
-    // var meshBall = new THREE.Mesh(ballGeom, ballMat);
-    // meshBall.position.set(0, 8, 35);
-    // meshBall.castShadow = true;
-    // scene.add(meshBall);
+     //rain & thunder feature
+     let rain, rainGeo, rainCount =500000, flash;
 
-    // //rigid body
-    // var bodyDescBall = RAPIER.RigidBodyDesc.dynamic().setTranslation(meshBall.position.x, meshBall.position.y, meshBall.position.z);
-    // var rigidBall = world.createRigidBody(bodyDescBall);
-    // var colliderBall = RAPIER.ColliderDesc.ball(1);
-    // world.createCollider(colliderBall, rigidBall);
-    // rigidBodies.push({ mesh: meshBall, rigid: rigidBall});
-
-    //rain & thunder feature
-    let rain, rainGeo, rainCount =500000, flash;
-
-    rainGeo = new THREE.Geometry();     //geometry of rain drops
-    for (let i=0;i<rainCount;i++)
-    {
-        const raindrop = new THREE.Vector3(
-            Math.random()*400-200,
-            Math.random()*500-250,
-            Math.random()*400-200,
-        );
-        raindrop.velocity ={};
-        raindrop.velocity =0;
-        rainGeo.vertices.push(raindrop);
-    }
-    
-    const rainMaterial = new THREE.PointsMaterial({
-        color:0xaaaaaa,
-        size:0.1,
-        transparent:true,
-    });
+     rainGeo = new THREE.Geometry();     //geometry of rain drops
+     for (let i=0;i<rainCount;i++)
+     {
+         const raindrop = new THREE.Vector3(
+             Math.random()*400-200,
+             Math.random()*500-250,
+             Math.random()*400-200,
+         );
+         raindrop.velocity ={};
+         raindrop.velocity =0;
+         rainGeo.vertices.push(raindrop);
+     }
+     
+     const rainMaterial = new THREE.PointsMaterial({
+         color:0xaaaaaa,
+         size:0.1,
+         transparent:true,
+     });
+ 
+         //combine rain material and rain shape
+         rain = new THREE.Points(rainGeo,rainMaterial);
+         scene.add(rain);
 
         //combine rain material and rain shape
         rain = new THREE.Points(rainGeo,rainMaterial);
         scene.add(rain);
-    
-        //random flash using point light to create lightning
-        flash = new THREE.PointLight(0x062d89,30,500,1.7);
-        flash.position.set(200,300,100);
-        scene.add(flash);
+
+    //random flash using point light to create lightning
+    flash = new THREE.PointLight(0x062d89,30,500,1.7);
+    flash.position.set(200,300,100);
+    scene.add(flash);
 
 
     //thunder sound feature
@@ -648,6 +636,17 @@ function Level2Init() {
 
         rainGeo.verticesNeedUpdate =true;       //rain animation
 
+        // rainGeo.vertices.forEach(p => {
+        //     p.velocity -= 0.1+ Math.random()*0.1;
+        //     p.y += p.velocity;
+        //     if (p.y < -200){
+        //         p.y = 200;
+        //         p.velocity =0;
+        //     }
+        // });
+
+        // rainGeo.verticesNeedUpdate =true;       //rain animation
+        // rain.rotation.y += 0.002;
         //flash and thundering
         if(Math.random()<0.93 ||flash.power >100)
         {

@@ -527,11 +527,6 @@ function Level1Init() {
                 player.firstPerson=false;
             }
         }
-
-        if (event.key.toLowerCase()=='r'){
-            location.reload();
-        }
-        
     }, false);
 
 
@@ -581,6 +576,7 @@ function Level1Init() {
     const moonGeo = new THREE.SphereGeometry(15,40,20);
     const moonMesh = new THREE.Mesh(moonGeo,material1);
     moonMesh.position.set(50,30,40);
+    moonMesh.castShadow = true;
     sky.add(moonMesh);
 
     //planet
@@ -604,8 +600,6 @@ function Level1Init() {
         if (!paused) {
             var deltaTime = clock.getDelta();
             sky.rotation.y += 0.002;
-            // sphere.rotation.x += 0.002;
-            // sphere.rotation.y += 0.002;
             
         
             if (enemy && player) {
