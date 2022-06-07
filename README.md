@@ -5,4 +5,4 @@ The goal of the game is to make your way through the game, finding the exit of t
 Created in three.js.
 
 To run:
-* Download files and direct to main folder and run on a live server.
+* Download files and direct to main folder and run the index.hhtml on a live server.
