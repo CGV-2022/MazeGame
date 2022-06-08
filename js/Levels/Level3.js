@@ -530,20 +530,6 @@ function Level3Init() {
     function mainLighting() {
         //ambient light
         scene.add(new THREE.AmbientLight(0xffffff, 0.2));
-
-        //directional light
-        const dirLight = new THREE.DirectionalLight(0xDD8B41, 0.2);
-        dirLight.position.set(-120, 80, 0);
-        dirLight.castShadow = true;
-        dirLight.shadow.camera.top = 50;
-        dirLight.shadow.camera.bottom = - 50;
-        dirLight.shadow.camera.left = - 50;
-        dirLight.shadow.camera.right = 50;
-        dirLight.shadow.camera.near = 0.1;
-        dirLight.shadow.camera.far = 200;
-        dirLight.shadow.mapSize.width = 2048;
-        dirLight.shadow.mapSize.height = 2048;
-        scene.add(dirLight);
     }
 
 
@@ -656,7 +642,7 @@ function Level3Init() {
         scene.add(model);
 
         //light colour and intensity
-        const light = new THREE.PointLight('orange', 6, 10, 2);
+        const light = new THREE.PointLight('orange', 3, 10, 2);
         light.castShadow = true;
         light.position.copy(lightPos);
         scene.add(light);
