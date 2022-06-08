@@ -34,7 +34,7 @@ function Level3Init() {
 
 
     //TIMER
-    var timeLeft = 180;
+    var timeLeft = 90;
     var str = "Time remaining: " + timeLeft;
     lt.textContent = str;
 
@@ -61,14 +61,14 @@ function Level3Init() {
     const scene = new THREE.Scene();
     //Skybox
     const loaderSky = new THREE.CubeTextureLoader();
-    loaderSky.setPath('./Resources/textures/skyboxes/heaven/');
+    loaderSky.setPath('./Resources/textures/skyboxes/Level3/');
     const texture = loaderSky.load([
-        'ft.jpg',
-        'bk.jpg',
-        'up.jpg',
-        'dn.jpg',
-        'rt.jpg',
-        'lf.jpg',
+        'px.png',
+        'nx.png',
+        'py.png',
+        'ny.png',
+        'pz.png',
+        'nz.png',
     ]);
     scene.background = texture;
 
@@ -79,8 +79,8 @@ function Level3Init() {
     //camera.position.set(0, 150, 0);                            //level editing
 
     //RENDERER
-    var options = { antialias: true };
-    //var options = { antialias: false };
+    //var options = { antialias: true };
+    var options = { antialias: false };
     const renderer = new THREE.WebGLRenderer(options);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio/* *0.8 */);
@@ -120,69 +120,6 @@ function Level3Init() {
 
     //OBJECTS
     var rigidBodies = [];  //contains dynamic rigid bodies whose mesh needs to be updated
-
-    /*
-    //ramp
-    const sandTextureLoader = new THREE.TextureLoader();
-    const sandTexture = sandTextureLoader.load("./resources/textures/floors/ground_sand.jpg");
-
-    const WIDTH = 10;
-    const HEIGHT = 1;
-    const LENGTH = 40;
-    const geomRamp = new THREE.BoxGeometry(WIDTH, HEIGHT, LENGTH);
-    const matRamp = new THREE.MeshStandardMaterial({ map: sandTexture });
-    wrapAndRepeatTextureRamp(matRamp.map);
-
-    //mesh
-    const meshRamp = new THREE.Mesh(geomRamp, matRamp);
-    meshRamp.position.set(0, -6.5, -69);
-    meshRamp.rotation.set(-Math.PI / 12, 0, 0);
-    meshRamp.receiveShadow = true;
-    scene.add(meshRamp);
-
-    //rigid body
-    var bodyDescRamp = RAPIER.RigidBodyDesc.fixed();
-    bodyDescRamp.setCanSleep(true);
-    bodyDescRamp.setTranslation(meshRamp.position.x, meshRamp.position.y, meshRamp.position.z);
-    const quatRamp = new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI / 12, 0, 0, 'XYZ'));
-    bodyDescRamp.setRotation({ x: quatRamp.x, y: quatRamp.y, z: quatRamp.z, w: quatRamp.w });
-    const rigidRamp = world.createRigidBody(bodyDescRamp);
-    var colliderRamp = RAPIER.ColliderDesc.cuboid(WIDTH * 0.5, HEIGHT * 0.5, LENGTH * 0.5);
-    world.createCollider(colliderRamp, rigidRamp);
-
-
-    //arena
-    //mesh
-    const geomCyl = new THREE.CylinderGeometry(20, 20, 1, 32);
-    const matCyl = matRamp;
-    const meshCyl = new THREE.Mesh(geomCyl, matCyl);
-    meshCyl.position.set(0, -11, -105);
-    scene.add(meshCyl);
-
-    //rigid body
-    var bodyDescCyl = RAPIER.RigidBodyDesc.fixed();
-    bodyDescCyl.setCanSleep(true);
-    bodyDescCyl.setTranslation(meshCyl.position.x, meshCyl.position.y, meshCyl.position.z);
-    const rigidCyl = world.createRigidBody(bodyDescCyl);
-    var colliderCyl = RAPIER.ColliderDesc.cylinder(1 * 0.5, 20);
-    world.createCollider(colliderCyl, rigidCyl);
-    */
-
-    //falling ball
-    //mesh
-    /*const ballGeom = new THREE.SphereGeometry(1, 32, 32);
-    const ballMat = new THREE.MeshStandardMaterial({ color: 'red' });
-    var meshBall = new THREE.Mesh(ballGeom, ballMat);
-    meshBall.position.set(0, 8, 35);
-    meshBall.castShadow = true;
-    scene.add(meshBall);
-
-    //rigid body
-    var bodyDescBall = RAPIER.RigidBodyDesc.dynamic().setTranslation(meshBall.position.x, meshBall.position.y, meshBall.position.z);
-    var rigidBall = world.createRigidBody(bodyDescBall);
-    var colliderBall = RAPIER.ColliderDesc.ball(1);
-    world.createCollider(colliderBall, rigidBall);
-    rigidBodies.push({ mesh: meshBall, rigid: rigidBall});*/
 
 
     //Floor
@@ -241,11 +178,11 @@ function Level3Init() {
     managerTorch.onLoad = function () {
         //when torch model has been loaded. Can clone a bunch of torches in here
         //ading torches to walls
-        torch(new THREE.Vector3(-12, 5, 31));
-        torch(new THREE.Vector3(-9, 5, 31));
-        torch(new THREE.Vector3(-9, 5, -8));
-        torch(new THREE.Vector3(15, 5, -28));
-        torch(new THREE.Vector3(15, 5, 38));
+        torchYRight(new THREE.Vector3(-11.25, 5, 31));
+        torchYLeft(new THREE.Vector3(-9.75, 5, 31));
+        torchX(new THREE.Vector3(-9, 5, -8.75));
+        torchX(new THREE.Vector3(15, 5, -29.75));
+        torchYLeft(new THREE.Vector3(11.25, 5, 35));
 
     }
 
@@ -635,7 +572,7 @@ function Level3Init() {
 
     //TORCHES
     //The light emitted from the torch
-    function torch(lightPos) {
+    function torchX(lightPos) {
         //mesh
         var model = torchModel.clone();
         model.position.set(lightPos.x, lightPos.y, lightPos.z);
@@ -647,4 +584,34 @@ function Level3Init() {
         light.position.copy(lightPos);
         scene.add(light);
     }
+
+    function torchYLeft(lightPos) {
+        //mesh
+        var model = torchModel.clone();
+        model.rotation.y = Math.PI / 2;
+        model.position.set(lightPos.x, lightPos.y, lightPos.z);
+        scene.add(model);
+
+        //light colour and intensity
+        const light = new THREE.PointLight('orange', 3, 10, 2);
+        light.castShadow = true;
+        light.position.copy(lightPos);
+        scene.add(light);
+    }
+
+    function torchYRight(lightPos) {
+        //mesh
+        var model = torchModel.clone();
+        model.rotation.y = 3 * Math.PI / 2;
+        model.position.set(lightPos.x, lightPos.y, lightPos.z);
+        scene.add(model);
+
+        //light colour and intensity
+        const light = new THREE.PointLight('orange', 3, 10, 2);
+        light.castShadow = true;
+        light.position.copy(lightPos);
+        scene.add(light);
+    }
+
+
 }
