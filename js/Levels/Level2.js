@@ -278,7 +278,7 @@ function Level2Init() {
     world.createCollider(colliderCyl, rigidCyl);
 
     //rain & thunder feature
-    let rain, rainGeo, rainCount = 500000, flash;
+    let rain, rainGeo, rainCount = 15000, flash;
 
     rainGeo = new THREE.Geometry();     //geometry of rain drops
     for (let i = 0; i < rainCount; i++) {
@@ -628,8 +628,8 @@ function Level2Init() {
         rainGeo.vertices.forEach(p => {
             p.velocity -= 0.1 + Math.random() * 0.1;
             p.y += p.velocity;
-            if (p.y < -200) {
-                p.y = 200;
+            if (p.y < -100) {
+                p.y = 100;
                 p.velocity = 0;
             }
         });
