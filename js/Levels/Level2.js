@@ -1,21 +1,21 @@
 //(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
 
-import {EffectComposer} from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/EffectComposer.js';
-import {RenderPass} from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/RenderPass.js';
-import {OutlinePass} from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/OutlinePass.js';
-import {GlitchPass} from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/GlitchPass.js';
+import { EffectComposer } from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/RenderPass.js';
+import { OutlinePass } from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/OutlinePass.js';
+import { GlitchPass } from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/GlitchPass.js';
 
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.module.js';
 import RAPIER from 'https://cdn.skypack.dev/@dimforge/rapier3d-compat';
-import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/controls/OrbitControls.js';
-import {FBXLoader} from 'https://cdn.jsdelivr.net/npm/three@0.118.1/examples/jsm/loaders/FBXLoader.js';
-import {Water} from '/Resources/objects/Water2.js';
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/controls/OrbitControls.js';
+import { FBXLoader } from 'https://cdn.jsdelivr.net/npm/three@0.118.1/examples/jsm/loaders/FBXLoader.js';
+import { Water } from '/Resources/objects/Water2.js';
 
-import {KeyDisplay} from '/js/KeyboardUtility.js';
-import {Player} from '/js/Player.js';
-import {Enemy} from '/js/Enemy.js';
+import { KeyDisplay } from '/js/KeyboardUtility.js';
+import { Player } from '/js/Player.js';
+import { Enemy } from '/js/Enemy.js';
 
-export function Level2(){
+export function Level2() {
     RAPIER.init().then(() => {
         Level2Init();
     });
@@ -33,11 +33,11 @@ function Level2Init() {
     //loss.textContent = "";
 
     //TIMER
-    var timeLeft = 180;
+    var timeLeft = 120;
     var str = "Time remaining: " + timeLeft;
     lt.textContent = str;
-    
-    function decrementSeconds(){
+
+    function decrementSeconds() {
         timeLeft = timeLeft - 1;
         str = "Time remaining: " + timeLeft;
         lt.textContent = str;
@@ -46,7 +46,7 @@ function Level2Init() {
     function startLevelTimer() {
         intervalID = setInterval(decrementSeconds, 1000);
     }
-    function stopLevelTimer(){
+    function stopLevelTimer() {
         clearInterval(intervalID);
     }
 
@@ -137,8 +137,8 @@ function Level2Init() {
     
     
     `;
-    
-    
+
+
     //SCENE
     const scene = new THREE.Scene();
     //Skybox
@@ -173,13 +173,13 @@ function Level2Init() {
     const orbitControls = new OrbitControls(camera, renderer.domElement);
     orbitControls.enableDamping = true;                          //leave commented
     orbitControls.enablePan = false;                             //and set
-    orbitControls.maxPolarAngle = Math.PI/1.9;                   //player rigid body
+    orbitControls.maxPolarAngle = Math.PI / 1.9;                   //player rigid body
     orbitControls.minDistance = 6;                               //at origin    
     //*
     orbitControls.maxDistance = 6;                               //for level editing                
     orbitControls.update();
 
-    
+
     //MINIMAP
     const camera2 = new THREE.OrthographicCamera(-10, 10, 10, -10, 0, 100);
     camera2.position.set(0, 20, 0);
@@ -203,22 +203,23 @@ function Level2Init() {
     //OBJECTS
     var rigidBodies = [];  //contains dynamic rigid bodies whose mesh needs to be updated
 
-       //SHADER for boulder
+    //SHADER for boulder
     const texLoad = new THREE.TextureLoader();
-    const textureS = texLoad.load( 'Resources/textures/sphere/galaxy.jpeg' );
-    const textureD = texLoad.load('Resources/textures/sphere/galaxy.jpeg' );
+    const textureS = texLoad.load('Resources/textures/sphere/galaxy.jpeg');
+    const textureD = texLoad.load('Resources/textures/sphere/galaxy.jpeg');
     const material1 = new THREE.RawShaderMaterial({
-        vertexShader:_VS,
-        fragmentShader:_FS,
-        transparent:true,
+        vertexShader: _VS,
+        fragmentShader: _FS,
+        transparent: true,
         uniforms:
         {
-        uFrequency:{value:new THREE.Vector2(10,5)},
-        uTime: {value:0},
-        mouse:{value:new THREE.Vector3()},
-            uTexture:{value:textureS},
-            displacement:{value:textureD},
-        uColor:{value: new THREE.Color('#ffffff')}  }
+            uFrequency: { value: new THREE.Vector2(10, 5) },
+            uTime: { value: 0 },
+            mouse: { value: new THREE.Vector3() },
+            uTexture: { value: textureS },
+            displacement: { value: textureD },
+            uColor: { value: new THREE.Color('#ffffff') }
+        }
     });
     textureD.wrapS = textureD.wrapT = THREE.RepeatWrapping;
     textureS.wrapS = textureS.wrapT = THREE.RepeatWrapping;
@@ -230,12 +231,12 @@ function Level2Init() {
     // scene.add(sphere);
 
     //Shader
-    
-    
+
+
     //ramp
     const sandTextureLoader = new THREE.TextureLoader();
     const sandTexture = sandTextureLoader.load("./resources/textures/floors/ground_greyPebbles.jpg");
-    
+
     const WIDTH = 10;
     const HEIGHT = 1;
     const LENGTH = 40;
@@ -246,18 +247,18 @@ function Level2Init() {
     //mesh
     const meshRamp = new THREE.Mesh(geomRamp, matRamp);
     meshRamp.position.set(0, -6.5, -69);
-    meshRamp.rotation.set(-Math.PI/12, 0, 0);
+    meshRamp.rotation.set(-Math.PI / 12, 0, 0);
     meshRamp.receiveShadow = true;
     scene.add(meshRamp);
-    
+
     //rigid body
     var bodyDescRamp = RAPIER.RigidBodyDesc.fixed();
     bodyDescRamp.setCanSleep(true);
     bodyDescRamp.setTranslation(meshRamp.position.x, meshRamp.position.y, meshRamp.position.z);
-    const quatRamp = new THREE.Quaternion().setFromEuler( new THREE.Euler(-Math.PI/12, 0, 0, 'XYZ') );
+    const quatRamp = new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI / 12, 0, 0, 'XYZ'));
     bodyDescRamp.setRotation({ x: quatRamp.x, y: quatRamp.y, z: quatRamp.z, w: quatRamp.w });
     const rigidRamp = world.createRigidBody(bodyDescRamp);
-    var colliderRamp = RAPIER.ColliderDesc.cuboid(WIDTH*0.5, HEIGHT*0.5, LENGTH*0.5);
+    var colliderRamp = RAPIER.ColliderDesc.cuboid(WIDTH * 0.5, HEIGHT * 0.5, LENGTH * 0.5);
     world.createCollider(colliderRamp, rigidRamp);
 
     //arena
@@ -266,61 +267,60 @@ function Level2Init() {
     const matCyl = matRamp;
     const meshCyl = new THREE.Mesh(geomCyl, matCyl);
     meshCyl.position.set(0, -11, -105);
-    scene.add( meshCyl );
-    
+    scene.add(meshCyl);
+
     //rigid body
     var bodyDescCyl = RAPIER.RigidBodyDesc.fixed();
     bodyDescCyl.setCanSleep(true);
     bodyDescCyl.setTranslation(meshCyl.position.x, meshCyl.position.y, meshCyl.position.z);
     const rigidCyl = world.createRigidBody(bodyDescCyl);
-    var colliderCyl = RAPIER.ColliderDesc.cylinder(1*0.5, 20);
+    var colliderCyl = RAPIER.ColliderDesc.cylinder(1 * 0.5, 20);
     world.createCollider(colliderCyl, rigidCyl);
 
-     //rain & thunder feature
-     let rain, rainGeo, rainCount =500000, flash;
+    //rain & thunder feature
+    let rain, rainGeo, rainCount = 500000, flash;
 
-     rainGeo = new THREE.Geometry();     //geometry of rain drops
-     for (let i=0;i<rainCount;i++)
-     {
-         const raindrop = new THREE.Vector3(
-             Math.random()*400-200,
-             Math.random()*500-250,
-             Math.random()*400-200,
-         );
-         raindrop.velocity ={};
-         raindrop.velocity =0;
-         rainGeo.vertices.push(raindrop);
-     }
-     
-     const rainMaterial = new THREE.PointsMaterial({
-         color:0xaaaaaa,
-         size:0.1,
-         transparent:true,
-     });
- 
-         //combine rain material and rain shape
-         rain = new THREE.Points(rainGeo,rainMaterial);
-         scene.add(rain);
+    rainGeo = new THREE.Geometry();     //geometry of rain drops
+    for (let i = 0; i < rainCount; i++) {
+        const raindrop = new THREE.Vector3(
+            Math.random() * 400 - 200,
+            Math.random() * 500 - 250,
+            Math.random() * 400 - 200,
+        );
+        raindrop.velocity = {};
+        raindrop.velocity = 0;
+        rainGeo.vertices.push(raindrop);
+    }
 
-        //combine rain material and rain shape
-        rain = new THREE.Points(rainGeo,rainMaterial);
-        scene.add(rain);
+    const rainMaterial = new THREE.PointsMaterial({
+        color: 0xaaaaaa,
+        size: 0.1,
+        transparent: true,
+    });
+
+    //combine rain material and rain shape
+    rain = new THREE.Points(rainGeo, rainMaterial);
+    scene.add(rain);
+
+    //combine rain material and rain shape
+    rain = new THREE.Points(rainGeo, rainMaterial);
+    scene.add(rain);
 
     //random flash using point light to create lightning
-    flash = new THREE.PointLight(0x062d89,30,500,1.7);
-    flash.position.set(200,300,100);
+    flash = new THREE.PointLight(0x062d89, 30, 500, 1.7);
+    flash.position.set(200, 300, 100);
     scene.add(flash);
 
 
     //thunder sound feature
     let soundThunder;
-    function Thunder(){
+    function Thunder() {
         const listener = new THREE.AudioListener();
         camera.add(listener);
-        
+
         soundThunder = new THREE.Audio(listener);
         const audioLoader = new THREE.AudioLoader();
-        audioLoader.load("Resources/media/Thunder.mp3",function(buffer){
+        audioLoader.load("Resources/media/Thunder.mp3", function (buffer) {
             soundThunder.setBuffer(buffer);
             soundThunder.setLoop(true);
             soundThunder.setVolume(0.5);
@@ -343,7 +343,7 @@ function Level2Init() {
     const marble = textureLoader.load("./resources/textures/walls/marble.jpg");
     const materialWall = new THREE.MeshStandardMaterial({ map: marble, side: THREE.DoubleSide });
     wrapAndRepeatTextureWall(materialWall.map);
-    
+
     //maze walls
     //outer
     wall(new THREE.Vector3(-50, 0, -50), new THREE.Vector3(-5, 10, -49));
@@ -351,12 +351,12 @@ function Level2Init() {
     wall(new THREE.Vector3(50, 0, -49), new THREE.Vector3(49, 10, 50));
     wall(new THREE.Vector3(49, 0, 50), new THREE.Vector3(-50, 10, 49));
     wall(new THREE.Vector3(-50, 0, 49), new THREE.Vector3(-49, 10, -49));
-    
+
     //inner
     wall(new THREE.Vector3(-34, 0, -33), new THREE.Vector3(-33, 10, 33));
     wall(new THREE.Vector3(16, 0, 9), new THREE.Vector3(1, 10, 8));
     wall(new THREE.Vector3(33, 0, -33), new THREE.Vector3(32, 10, 50));
-    
+
     wall(new THREE.Vector3(17, 0, -50), new THREE.Vector3(16, 10, 33));
 
     wall(new THREE.Vector3(0, 0, -33), new THREE.Vector3(1, 10, 9));
@@ -364,13 +364,13 @@ function Level2Init() {
     wall(new THREE.Vector3(-17, 0, -17), new THREE.Vector3(-16, 10, 33));
 
     wall(new THREE.Vector3(-17, 0, 33), new THREE.Vector3(0, 10, 32));
-    
+
 
     //Torches
     var torchModel;
 
     const managerTorch = new THREE.LoadingManager();
-    managerTorch.onLoad = function() { //when torch model has been loaded. Can clone a bunch of torches in here
+    managerTorch.onLoad = function () { //when torch model has been loaded. Can clone a bunch of torches in here
         //torch(new THREE.Vector3(0, 5, 30.5));
         //torch(new THREE.Vector3(0, 5, 40));
     }
@@ -378,10 +378,10 @@ function Level2Init() {
     const loaderTorch = new FBXLoader(managerTorch);
     loaderTorch.setPath('./Resources/models/Torch/');
     loaderTorch.load('Torch.fbx', (fbx) => {
-      const model = fbx;
-      fbx.scale.setScalar(0.02);
+        const model = fbx;
+        fbx.scale.setScalar(0.02);
 
-      torchModel = model;
+        torchModel = model;
     });
 
 
@@ -403,7 +403,7 @@ function Level2Init() {
         //rigid body                                                               
         //player initial position
         var bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(40, 1.5, 40);
-        const q = new THREE.Quaternion().setFromEuler( new THREE.Euler(0, model.rotation.y, 0, 'XYZ') );
+        const q = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, model.rotation.y, 0, 'XYZ'));
         bodyDesc.setRotation({ x: q.x, y: q.y, z: q.z, w: q.w });
         var rigidBody = world.createRigidBody(bodyDesc);
         var dynamicCollider = RAPIER.ColliderDesc.ball(0.9);
@@ -415,19 +415,19 @@ function Level2Init() {
         const animationsMap = new Map();
 
         const manager = new THREE.LoadingManager();
-        manager.onLoad = function() { //when all animations have been loaded
+        manager.onLoad = function () { //when all animations have been loaded
             //pass model, mixer and animations to character controller
-            player = new Player(model, mixer, animationsMap, orbitControls, camera, camera2, rigidBody, 
-                new RAPIER.Ray( 
+            player = new Player(model, mixer, animationsMap, orbitControls, camera, camera2, rigidBody,
+                new RAPIER.Ray(
                     rigidBody.translation(),
-                    { x: 0, y: -1, z: 0} 
-                ), 
-                new RAPIER.Ray( 
+                    { x: 0, y: -1, z: 0 }
+                ),
+                new RAPIER.Ray(
                     rigidBody.translation(),
-                    { x: 0, y: 0, z: -1 } 
+                    { x: 0, y: 0, z: -1 }
                 )
             );
-            startLevelTimer();  
+            startLevelTimer();
         };
 
         //load animations
@@ -443,11 +443,11 @@ function Level2Init() {
         const OnLoad = (animName, anim) => {
             const clip = anim.animations[0];
             const animAction = mixer.clipAction(clip);
-            
+
             //make death animation not loop when it's done
             if (animName == 'Death') {
                 animAction.loop = THREE.LoopOnce;
-                animAction.clampWhenFinished=true;
+                animAction.clampWhenFinished = true;
             }
 
             animationsMap.set(animName, animAction);
@@ -472,12 +472,12 @@ function Level2Init() {
         //rigid body                                                                
         //enemy initial position
         var bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(0, -9.9, -105);
-        const q = new THREE.Quaternion().setFromEuler( new THREE.Euler(0, model.rotation.y, 0, 'XYZ') );
+        const q = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, model.rotation.y, 0, 'XYZ'));
         bodyDesc.setRotation({ x: q.x, y: q.y, z: q.z, w: q.w });
         var rigidBody = world.createRigidBody(bodyDesc);
         var dynamicCollider = RAPIER.ColliderDesc.ball(1.1);
         world.createCollider(dynamicCollider, rigidBody);
-        
+
 
         //load animations, store in map and add to mixer
         const mixer = new THREE.AnimationMixer(model);
@@ -498,20 +498,20 @@ function Level2Init() {
             //make death animation not loop when it's done
             if (animName == 'Death') {
                 animAction.loop = THREE.LoopOnce;
-                animAction.clampWhenFinished=true;
+                animAction.clampWhenFinished = true;
             }
 
             animationsMap.set(animName, animAction);
             if (animName == 'Death') { //if all animations have been loaded
                 //make enemy object
-                enemy = new Enemy(model, mixer, animationsMap, rigidBody, 
-                    new RAPIER.Ray( 
+                enemy = new Enemy(model, mixer, animationsMap, rigidBody,
+                    new RAPIER.Ray(
                         rigidBody.translation(),
-                        { x: 0, y: -1, z: 0} 
-                    ), 
-                    new RAPIER.Ray( 
+                        { x: 0, y: -1, z: 0 }
+                    ),
+                    new RAPIER.Ray(
                         rigidBody.translation(),
-                        { x: 0, y: 0, z: 1 } 
+                        { x: 0, y: 0, z: 1 }
                     )
                 );
             }
@@ -520,59 +520,59 @@ function Level2Init() {
 
 
     //PLAYER CONTROLS
-    const keysPressed = {'w': false, 'a': false, 's': false, 'd': false, 'q': false, 'e': false};
+    const keysPressed = { 'w': false, 'a': false, 's': false, 'd': false, 'q': false, 'e': false };
     const keyDisplayQueue = new KeyDisplay();
 
     document.addEventListener('keydown', (event) => {
-        keyDisplayQueue.down(event.key);          
-        keysPressed[event.key.toLowerCase()] = true ;   
-        
+        keyDisplayQueue.down(event.key);
+        keysPressed[event.key.toLowerCase()] = true;
+
     }, false);
     document.addEventListener('keyup', (event) => {
-        keyDisplayQueue.up(event.key);                 
-        keysPressed[event.key.toLowerCase()] = false;  
+        keyDisplayQueue.up(event.key);
+        keysPressed[event.key.toLowerCase()] = false;
 
     }, false);
 
     //3RD AND 1ST PERSON
     var firstPerson = false;
     document.addEventListener('keypress', (event) => {
-        if (event.key.toLowerCase()=='t' && player) {
+        if (event.key.toLowerCase() == 't' && player) {
             firstPerson = !firstPerson;
 
-            if(firstPerson==true) {
-                camera.position.set(player.model.position.x, player.model.position.y + 2.5, player.model.position.z-1,5);
-                orbitControls.minDistance=0;
-                orbitControls.maxDistance=0.6;
-                player.firstPerson=true;
-                
+            if (firstPerson == true) {
+                camera.position.set(player.model.position.x, player.model.position.y + 2.5, player.model.position.z - 1, 5);
+                orbitControls.minDistance = 0;
+                orbitControls.maxDistance = 0.6;
+                player.firstPerson = true;
+
             }
             else {
                 camera.position.set(0, 5, 6);
-                orbitControls.minDistance=6;
-                orbitControls.maxDistance=6; 
-                player.firstPerson=false;
+                orbitControls.minDistance = 6;
+                orbitControls.maxDistance = 6;
+                player.firstPerson = false;
             }
         }
 
-        if (event.key.toLowerCase()=='r'){
+        if (event.key.toLowerCase() == 'r') {
             location.reload();
         }
-        
+
     }, false);
 
     //PAUSE CONTROLS AND CLOCK INITIALIZATION
     const clock = new THREE.Clock();
     var paused = false;
     document.addEventListener('keypress', (event) => {
-        if (event.key.toLowerCase()=='p') {
+        if (event.key.toLowerCase() == 'p') {
             paused = !paused;
 
-            if(paused) {
+            if (paused) {
                 stopLevelTimer();
                 clock.stop();
                 ps.style.display = 'flex';
-                
+
             }
             else {
                 startLevelTimer();
@@ -580,34 +580,34 @@ function Level2Init() {
                 ps.style.display = 'none';
             }
         }
-        
+
     }, false);
-    
+
 
     //WHAT HAPPENS ON EACH UPDATE
     function animate() {
         if (!paused) {
             var deltaTime = clock.getDelta();
-        
+
             if (enemy && player) {
                 player.update(world, deltaTime, keysPressed, enemy);
                 enemy.update(world, deltaTime, player);
 
-                if(enemy.death==true) {                                          //if player kills enemy, they win and are invincible
+                if (enemy.death == true) {                                          //if player kills enemy, they win and are invincible
                     stopLevelTimer();
                     dub.style.display = 'flex';
 
                     player.win = true;
                 }
-                if (timeLeft<=0 || player.death==true) {                         //if time runs out or they were killed they die
+                if (timeLeft <= 0 || player.death == true) {                         //if time runs out or they were killed they die
                     stopLevelTimer();
-                    player.death=true; //if timer runs out need to do this
+                    player.death = true; //if timer runs out need to do this
 
                     loss.style.display = 'flex';
                 }
 
                 //if spawn point must change when player reaches a certain location
-                if(player.model.position.z<-50) {
+                if (player.model.position.z < -50) {
                     player.spawnPoint.set(0, 0.9, -52);
                 }
             }
@@ -621,20 +621,20 @@ function Level2Init() {
                 rigidBodies[i].mesh.position.x = position.x;
                 rigidBodies[i].mesh.position.y = position.y;
                 rigidBodies[i].mesh.position.z = position.z;
-                rigidBodies[i].mesh.setRotationFromQuaternion(new THREE.Quaternion(rotation.x,rotation.y,rotation.z,rotation.w));
-            }    
+                rigidBodies[i].mesh.setRotationFromQuaternion(new THREE.Quaternion(rotation.x, rotation.y, rotation.z, rotation.w));
+            }
         }
 
         rainGeo.vertices.forEach(p => {
-            p.velocity -=0.1+ Math.random()*0.1;
+            p.velocity -= 0.1 + Math.random() * 0.1;
             p.y += p.velocity;
-            if (p.y<-200){
-                p.y =200;
-                p.velocity =0;
+            if (p.y < -200) {
+                p.y = 200;
+                p.velocity = 0;
             }
         });
 
-        rainGeo.verticesNeedUpdate =true;       //rain animation
+        rainGeo.verticesNeedUpdate = true;       //rain animation
 
         // rainGeo.vertices.forEach(p => {
         //     p.velocity -= 0.1+ Math.random()*0.1;
@@ -648,15 +648,14 @@ function Level2Init() {
         // rainGeo.verticesNeedUpdate =true;       //rain animation
         // rain.rotation.y += 0.002;
         //flash and thundering
-        if(Math.random()<0.93 ||flash.power >100)
-        {
-            if (flash.power <100){
-                flash.position.set(Math.random()*400,300+Math.random()*200,100);
+        if (Math.random() < 0.93 || flash.power > 100) {
+            if (flash.power < 100) {
+                flash.position.set(Math.random() * 400, 300 + Math.random() * 200, 100);
             }
-            flash.power = 50 + Math.random()*500;
+            flash.power = 50 + Math.random() * 500;
         }
 
-        
+
         orbitControls.update();
         renderer.render(scene, camera);
         composer.render();
@@ -672,7 +671,7 @@ function Level2Init() {
     function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);        
+        renderer.setSize(window.innerWidth, window.innerHeight);
     }
     window.addEventListener('resize', onWindowResize);
 
@@ -697,18 +696,18 @@ function Level2Init() {
     }
 
     //REPEATING TEXTURES
-    function wrapAndRepeatTextureFloor (map) {
+    function wrapAndRepeatTextureFloor(map) {
         map.wrapS = map.wrapT = THREE.RepeatWrapping;
         map.repeat.x = map.repeat.y = 20;
     }
 
-    function wrapAndRepeatTextureWall (map) {
+    function wrapAndRepeatTextureWall(map) {
         map.wrapS = map.wrapT = THREE.RepeatWrapping;
         map.repeat.x = 3;
         map.repeat.y = 1;
     }
 
-    function wrapAndRepeatTextureRamp (map) {
+    function wrapAndRepeatTextureRamp(map) {
         map.wrapS = map.wrapT = THREE.RepeatWrapping;
         map.repeat.x = 3;
         map.repeat.y = 3;
@@ -716,13 +715,13 @@ function Level2Init() {
 
     //FLOOR
     function floor() {
-    
+
 
         //textures
         const textureLoader = new THREE.TextureLoader();
         //const texture = textureLoader.load("./resources/textures/floors/placeholder.png");
         const texture = textureLoader.load("./resources/textures/floors/gravel.jpg");
-        
+
         //dimensions
         const WIDTH = 100;
         const HEIGHT = 1;
@@ -734,26 +733,26 @@ function Level2Init() {
 
         //mesh
         const meshFloor = new THREE.Mesh(geometry, material);
-        meshFloor.position.y=-0.5;
+        meshFloor.position.y = -0.5;
         meshFloor.receiveShadow = true;
         scene.add(meshFloor);
-        
+
         //rigid body
         var bodyDesc = RAPIER.RigidBodyDesc.fixed();
         bodyDesc.setCanSleep(true);
         bodyDesc.setTranslation(meshFloor.position.x, meshFloor.position.y, meshFloor.position.z);
         const rigidBody = world.createRigidBody(bodyDesc);
-        var collider = RAPIER.ColliderDesc.cuboid(WIDTH*0.5, HEIGHT*0.5, LENGTH*0.5);
+        var collider = RAPIER.ColliderDesc.cuboid(WIDTH * 0.5, HEIGHT * 0.5, LENGTH * 0.5);
         world.createCollider(collider, rigidBody);
     }
 
     //WALLS
     function wall(startPoint, endPoint) {
-        const wallSize = new THREE.Vector3(Math.abs(endPoint.x-startPoint.x), Math.abs(endPoint.y-startPoint.y), Math.abs(endPoint.z-startPoint.z));
-        const wallPos = new THREE.Vector3((endPoint.x+startPoint.x)/2, (endPoint.y+startPoint.y)/2, (endPoint.z+startPoint.z)/2);
+        const wallSize = new THREE.Vector3(Math.abs(endPoint.x - startPoint.x), Math.abs(endPoint.y - startPoint.y), Math.abs(endPoint.z - startPoint.z));
+        const wallPos = new THREE.Vector3((endPoint.x + startPoint.x) / 2, (endPoint.y + startPoint.y) / 2, (endPoint.z + startPoint.z) / 2);
 
         const geometry = new THREE.BoxGeometry(wallSize.x, wallSize.y, wallSize.z);
-        
+
         //mesh
         const meshWall = new THREE.Mesh(geometry, materialWall);
         meshWall.position.copy(wallPos);
@@ -766,31 +765,30 @@ function Level2Init() {
         bodyDesc.setCanSleep(true);
         bodyDesc.setTranslation(meshWall.position.x, meshWall.position.y, meshWall.position.z);
         const rigidBody = world.createRigidBody(bodyDesc);
-        var collider = RAPIER.ColliderDesc.cuboid(wallSize.x*0.5, wallSize.y*0.5, wallSize.z*0.5);
+        var collider = RAPIER.ColliderDesc.cuboid(wallSize.x * 0.5, wallSize.y * 0.5, wallSize.z * 0.5);
         world.createCollider(collider, rigidBody);
     }
 
- 
+
 
     //Water feature
-    function waterFeature()
-    {
+    function waterFeature() {
         //water geometry shape
-        const waterGeometry = new THREE.CircleGeometry( 6, 32 );
+        const waterGeometry = new THREE.CircleGeometry(6, 32);
 
         //flow map used to navigate the direction on water flow
         const flowTextureLoader = new THREE.TextureLoader();
-        const flowMap = flowTextureLoader.load( 'Resources/textures/water/flowmap.jpeg' );
+        const flowMap = flowTextureLoader.load('Resources/textures/water/flowmap.jpeg');
 
         //properties for water feature
-        const water1 = new Water( waterGeometry, {
+        const water1 = new Water(waterGeometry, {
             scale: 1,
-            color:0x14c4ff,
+            color: 0x14c4ff,
             textureWidth: 512,
             textureHeight: 512,
             flowMap: flowMap,
 
-        } );
+        });
 
         //setting featurre position//setting featurre position
         water1.position.y = 0.2;
@@ -798,29 +796,29 @@ function Level2Init() {
         water1.position.z = 23;
         water1.rotation.x = Math.PI * - 0.5;
 
-        const water2 = new Water( waterGeometry, {
+        const water2 = new Water(waterGeometry, {
             scale: 1,
-            color:0x14c4ff,
+            color: 0x14c4ff,
             textureWidth: 512,
             textureHeight: 512,
             flowMap: flowMap,
 
-        } );
+        });
 
         water2.position.y = 0.2;
         water2.position.x = 40;
         water2.position.z = -40;
         water2.rotation.x = Math.PI * - 0.5;
-        
-        scene.add( water1 );
-        scene.add( water2 );
+
+        scene.add(water1);
+        scene.add(water2);
     }
 
     //TORCHES
     function torch(lightPos) {
         //mesh
         var model = torchModel.clone();
-        model.position.set(lightPos.x, lightPos.y-1, lightPos.z);
+        model.position.set(lightPos.x, lightPos.y - 1, lightPos.z);
         //model.position.set(0, 4, 30);
         scene.add(model);
 
@@ -828,7 +826,7 @@ function Level2Init() {
         const light = new THREE.PointLight('orange', 1, 10, 2);
         light.castShadow = true;
         light.position.copy(lightPos);
-        scene.add(light); 
-    }   
+        scene.add(light);
+    }
 }
 

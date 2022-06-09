@@ -1,21 +1,21 @@
-(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
+(function () { var script = document.createElement('script'); script.onload = function () { var stats = new Stats(); document.body.appendChild(stats.dom); requestAnimationFrame(function loop() { stats.update(); requestAnimationFrame(loop) }); }; script.src = '//mrdoob.github.io/stats.js/build/stats.min.js'; document.head.appendChild(script); })()
 
-import {EffectComposer} from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/EffectComposer.js';
-import {RenderPass} from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/RenderPass.js';
-import {OutlinePass} from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/OutlinePass.js';
-import {GlitchPass} from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/GlitchPass.js';
+import { EffectComposer } from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/RenderPass.js';
+import { OutlinePass } from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/OutlinePass.js';
+import { GlitchPass } from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/GlitchPass.js';
 
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.module.js';
 import RAPIER from 'https://cdn.skypack.dev/@dimforge/rapier3d-compat';
-import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/controls/OrbitControls.js';
-import {FBXLoader} from 'https://cdn.jsdelivr.net/npm/three@0.118.1/examples/jsm/loaders/FBXLoader.js';
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/controls/OrbitControls.js';
+import { FBXLoader } from 'https://cdn.jsdelivr.net/npm/three@0.118.1/examples/jsm/loaders/FBXLoader.js';
 
-import {KeyDisplay} from '/js/KeyboardUtility.js';
-import {Player} from '/js/Player.js';
-import {Enemy} from '/js/Enemy.js';
+import { KeyDisplay } from '/js/KeyboardUtility.js';
+import { Player } from '/js/Player.js';
+import { Enemy } from '/js/Enemy.js';
 
 
-export function Level0(){
+export function Level0() {
     RAPIER.init().then(() => {
         Level0Init();
     });
@@ -37,8 +37,8 @@ function Level0Init() {
     var timeLeft = 180;
     var str = "Time remaining: " + timeLeft;
     lt.textContent = str;
-    
-    function decrementSeconds(){
+
+    function decrementSeconds() {
         timeLeft = timeLeft - 1;
         str = "Time remaining: " + timeLeft;
         lt.textContent = str;
@@ -47,16 +47,16 @@ function Level0Init() {
     function startLevelTimer() {
         intervalID = setInterval(decrementSeconds, 1000);
     }
-    function stopLevelTimer(){
+    function stopLevelTimer() {
         clearInterval(intervalID);
     }
 
     //INIT PHYSICS
     var gravity = { x: 0.0, y: -9.81, z: 0.0 };
     var world = new RAPIER.World(gravity);
-    
-    
-    
+
+
+
     //SCENE
     const scene = new THREE.Scene();
     //Skybox
@@ -91,12 +91,12 @@ function Level0Init() {
     const orbitControls = new OrbitControls(camera, renderer.domElement);
     orbitControls.enableDamping = true;                          //leave commented
     orbitControls.enablePan = false;                             //and set
-    orbitControls.maxPolarAngle = Math.PI/1.9;                   //player rigid body
+    orbitControls.maxPolarAngle = Math.PI / 1.9;                   //player rigid body
     orbitControls.minDistance = 6;                               //at origin    
     orbitControls.maxDistance = 6;                               //for level editing                
     orbitControls.update();
 
-    
+
     //MINIMAP
     const camera2 = new THREE.OrthographicCamera(-10, 10, 10, -10, 0, 100);
     camera2.position.set(0, 20, 0);
@@ -126,7 +126,7 @@ function Level0Init() {
     //ramp
     const sandTextureLoader = new THREE.TextureLoader();
     const sandTexture = sandTextureLoader.load("./resources/textures/floors/ground_sand.jpg");
-    
+
     const WIDTH = 10;
     const HEIGHT = 1;
     const LENGTH = 40;
@@ -137,18 +137,18 @@ function Level0Init() {
     //mesh
     const meshRamp = new THREE.Mesh(geomRamp, matRamp);
     meshRamp.position.set(0, -6.5, -69);
-    meshRamp.rotation.set(-Math.PI/12, 0, 0);
+    meshRamp.rotation.set(-Math.PI / 12, 0, 0);
     meshRamp.receiveShadow = true;
     scene.add(meshRamp);
-    
+
     //rigid body
     var bodyDescRamp = RAPIER.RigidBodyDesc.fixed();
     bodyDescRamp.setCanSleep(true);
     bodyDescRamp.setTranslation(meshRamp.position.x, meshRamp.position.y, meshRamp.position.z);
-    const quatRamp = new THREE.Quaternion().setFromEuler( new THREE.Euler(-Math.PI/12, 0, 0, 'XYZ') );
+    const quatRamp = new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI / 12, 0, 0, 'XYZ'));
     bodyDescRamp.setRotation({ x: quatRamp.x, y: quatRamp.y, z: quatRamp.z, w: quatRamp.w });
     const rigidRamp = world.createRigidBody(bodyDescRamp);
-    var colliderRamp = RAPIER.ColliderDesc.cuboid(WIDTH*0.5, HEIGHT*0.5, LENGTH*0.5);
+    var colliderRamp = RAPIER.ColliderDesc.cuboid(WIDTH * 0.5, HEIGHT * 0.5, LENGTH * 0.5);
     world.createCollider(colliderRamp, rigidRamp);
 
 
@@ -158,14 +158,14 @@ function Level0Init() {
     const matCyl = matRamp;
     const meshCyl = new THREE.Mesh(geomCyl, matCyl);
     meshCyl.position.set(0, -11, -105);
-    scene.add( meshCyl );
-    
+    scene.add(meshCyl);
+
     //rigid body
     var bodyDescCyl = RAPIER.RigidBodyDesc.fixed();
     bodyDescCyl.setCanSleep(true);
     bodyDescCyl.setTranslation(meshCyl.position.x, meshCyl.position.y, meshCyl.position.z);
     const rigidCyl = world.createRigidBody(bodyDescCyl);
-    var colliderCyl = RAPIER.ColliderDesc.cylinder(1*0.5, 20);
+    var colliderCyl = RAPIER.ColliderDesc.cylinder(1 * 0.5, 20);
     world.createCollider(colliderCyl, rigidCyl);
 
 
@@ -204,7 +204,7 @@ function Level0Init() {
     wall(new THREE.Vector3(50, 0, -49), new THREE.Vector3(49, 10, 50));
     wall(new THREE.Vector3(49, 0, 50), new THREE.Vector3(-50, 10, 49));
     wall(new THREE.Vector3(-50, 0, 49), new THREE.Vector3(-49, 10, -49));
-    
+
     //inner
     wall(new THREE.Vector3(-30, 0, -49), new THREE.Vector3(-29, 10, 30));
     wall(new THREE.Vector3(-10, 0, 30), new THREE.Vector3(30, 10, 29));
@@ -216,7 +216,7 @@ function Level0Init() {
     wall(new THREE.Vector3(10, 0, -49), new THREE.Vector3(11, 10, -30));
     wall(new THREE.Vector3(30, 0, -30), new THREE.Vector3(-10, 10, -29));
     wall(new THREE.Vector3(-10, 0, -29), new THREE.Vector3(-9, 10, -10));
-    
+
 
     //Torches
     /*var torchModel;
@@ -255,7 +255,7 @@ function Level0Init() {
 
         //rigid body                                                               //player initial position
         var bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(0, 0.9, 40);
-        const q = new THREE.Quaternion().setFromEuler( new THREE.Euler(0, model.rotation.y, 0, 'XYZ') );
+        const q = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, model.rotation.y, 0, 'XYZ'));
         bodyDesc.setRotation({ x: q.x, y: q.y, z: q.z, w: q.w });
         var rigidBody = world.createRigidBody(bodyDesc);
         var dynamicCollider = RAPIER.ColliderDesc.ball(0.9);
@@ -268,19 +268,19 @@ function Level0Init() {
         const animationsMap = new Map();
 
         const manager = new THREE.LoadingManager();
-        manager.onLoad = function() { //when all animations have been loaded
+        manager.onLoad = function () { //when all animations have been loaded
             //pass model, mixer and animations to character controller
-            player = new Player(model, mixer, animationsMap, orbitControls, camera, camera2, rigidBody, 
-                new RAPIER.Ray( 
+            player = new Player(model, mixer, animationsMap, orbitControls, camera, camera2, rigidBody,
+                new RAPIER.Ray(
                     rigidBody.translation(),
-                    { x: 0, y: -1, z: 0} 
-                ), 
-                new RAPIER.Ray( 
+                    { x: 0, y: -1, z: 0 }
+                ),
+                new RAPIER.Ray(
                     rigidBody.translation(),
-                    { x: 0, y: 0, z: -1 } 
+                    { x: 0, y: 0, z: -1 }
                 )
             );
-            startLevelTimer();  
+            startLevelTimer();
         };
 
 
@@ -297,11 +297,11 @@ function Level0Init() {
         const OnLoad = (animName, anim) => {
             const clip = anim.animations[0];
             const animAction = mixer.clipAction(clip);
-            
+
             //make death animation not loop when it's done
             if (animName == 'Death') {
                 animAction.loop = THREE.LoopOnce;
-                animAction.clampWhenFinished=true;
+                animAction.clampWhenFinished = true;
             }
 
             animationsMap.set(animName, animAction);
@@ -326,12 +326,12 @@ function Level0Init() {
 
         //rigid body                                                                //enemy initial position
         var bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(0, -9.9, -105);
-        const q = new THREE.Quaternion().setFromEuler( new THREE.Euler(0, model.rotation.y, 0, 'XYZ') );
+        const q = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, model.rotation.y, 0, 'XYZ'));
         bodyDesc.setRotation({ x: q.x, y: q.y, z: q.z, w: q.w });
         var rigidBody = world.createRigidBody(bodyDesc);
         var dynamicCollider = RAPIER.ColliderDesc.ball(1.1);
         world.createCollider(dynamicCollider, rigidBody);
-        
+
 
 
         //load animations, store in map and add to mixer
@@ -353,21 +353,21 @@ function Level0Init() {
             //make death animation not loop when it's done
             if (animName == 'Death') {
                 animAction.loop = THREE.LoopOnce;
-                animAction.clampWhenFinished=true;
+                animAction.clampWhenFinished = true;
             }
 
 
             animationsMap.set(animName, animAction);
             if (animName == 'Death') { //if all animations have been loaded
                 //make enemy object
-                enemy = new Enemy(model, mixer, animationsMap, rigidBody, 
-                    new RAPIER.Ray( 
+                enemy = new Enemy(model, mixer, animationsMap, rigidBody,
+                    new RAPIER.Ray(
                         rigidBody.translation(),
-                        { x: 0, y: -1, z: 0} 
-                    ), 
-                    new RAPIER.Ray( 
+                        { x: 0, y: -1, z: 0 }
+                    ),
+                    new RAPIER.Ray(
                         rigidBody.translation(),
-                        { x: 0, y: 0, z: 1 } 
+                        { x: 0, y: 0, z: 1 }
                     )
                 );
             }
@@ -377,41 +377,41 @@ function Level0Init() {
 
 
     //PLAYER CONTROLS
-    const keysPressed = {'w': false, 'a': false, 's': false, 'd': false, 'q': false, 'e': false};
+    const keysPressed = { 'w': false, 'a': false, 's': false, 'd': false, 'q': false, 'e': false };
     const keyDisplayQueue = new KeyDisplay();
 
     document.addEventListener('keydown', (event) => {
-        keyDisplayQueue.down(event.key);          
-        keysPressed[event.key.toLowerCase()] = true ;   
-        
+        keyDisplayQueue.down(event.key);
+        keysPressed[event.key.toLowerCase()] = true;
+
     }, false);
     document.addEventListener('keyup', (event) => {
-        keyDisplayQueue.up(event.key);                 
-        keysPressed[event.key.toLowerCase()] = false;  
+        keyDisplayQueue.up(event.key);
+        keysPressed[event.key.toLowerCase()] = false;
 
     }, false);
 
     //3RD AND 1ST PERSON
     var firstPerson = false;
     document.addEventListener('keypress', (event) => {
-        if (event.key.toLowerCase()=='t' && player) {
+        if (event.key.toLowerCase() == 't' && player) {
             firstPerson = !firstPerson;
 
-            if(firstPerson==true) {
+            if (firstPerson == true) {
                 camera.position.set(player.model.position.x, player.model.position.y + 2.5, player.model.position.z);
-                orbitControls.minDistance=0;
-                orbitControls.maxDistance=0.6;
-                player.firstPerson=true;
-                
+                orbitControls.minDistance = 0;
+                orbitControls.maxDistance = 0.6;
+                player.firstPerson = true;
+
             }
             else {
                 camera.position.set(0, 5, 6);
-                orbitControls.minDistance=6;
-                orbitControls.maxDistance=6; 
-                player.firstPerson=false;
+                orbitControls.minDistance = 6;
+                orbitControls.maxDistance = 6;
+                player.firstPerson = false;
             }
         }
-        
+
     }, false);
 
 
@@ -419,17 +419,17 @@ function Level0Init() {
     const clock = new THREE.Clock();
     var paused = false;
     document.addEventListener('keypress', (event) => {
-        if (event.key.toLowerCase()=='p') {
+        if (event.key.toLowerCase() == 'p') {
             paused = !paused;
 
-            if(paused) {
+            if (paused) {
                 stopLevelTimer();
                 clock.stop();
                 ps.style.display = 'flex';
-                
-               
+
+
                 //ps.textContent="PAUSED";
-                
+
             }
             else {
                 startLevelTimer();
@@ -438,34 +438,34 @@ function Level0Init() {
                 //ps.textContent="";
             }
         }
-        
+
     }, false);
-    
+
 
     //WHAT HAPPENS ON EACH UPDATE
     function animate() {
         if (!paused) {
             var deltaTime = clock.getDelta();
-        
+
             if (enemy && player) {
                 player.update(world, deltaTime, keysPressed, enemy);
                 enemy.update(world, deltaTime, player);
 
-                if(enemy.death==true) {                                          //if player kills enemy, they win and are invincible
+                if (enemy.death == true) {                                          //if player kills enemy, they win and are invincible
                     stopLevelTimer();
                     dub.style.display = 'flex';
 
                     player.win = true;
                 }
-                if (timeLeft<=0 || player.death==true) {                         //if time runs out or they were killed they die
+                if (timeLeft <= 0 || player.death == true) {                         //if time runs out or they were killed they die
                     stopLevelTimer();
-                    player.death=true; //if timer runs out need to do this
+                    player.death = true; //if timer runs out need to do this
 
                     loss.style.display = 'flex';
                 }
 
                 //if spawn point must change when player reaches a certain location
-                if(player.model.position.z<-50) {
+                if (player.model.position.z < -50) {
                     player.spawnPoint.set(0, 0.9, -52);
                 }
             }
@@ -479,10 +479,10 @@ function Level0Init() {
                 rigidBodies[i].mesh.position.x = position.x;
                 rigidBodies[i].mesh.position.y = position.y;
                 rigidBodies[i].mesh.position.z = position.z;
-                rigidBodies[i].mesh.setRotationFromQuaternion(new THREE.Quaternion(rotation.x,rotation.y,rotation.z,rotation.w));
-            }    
+                rigidBodies[i].mesh.setRotationFromQuaternion(new THREE.Quaternion(rotation.x, rotation.y, rotation.z, rotation.w));
+            }
         }
-        
+
         orbitControls.update();
         renderer.render(scene, camera);
         composer.render();
@@ -499,7 +499,7 @@ function Level0Init() {
     function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);        
+        renderer.setSize(window.innerWidth, window.innerHeight);
     }
     window.addEventListener('resize', onWindowResize);
 
@@ -526,18 +526,18 @@ function Level0Init() {
 
 
     //REPEATING TEXTURES
-    function wrapAndRepeatTextureFloor (map) {
+    function wrapAndRepeatTextureFloor(map) {
         map.wrapS = map.wrapT = THREE.RepeatWrapping;
         map.repeat.x = map.repeat.y = 20;
     }
 
-    function wrapAndRepeatTextureWall (map) {
+    function wrapAndRepeatTextureWall(map) {
         map.wrapS = map.wrapT = THREE.RepeatWrapping;
         map.repeat.x = 3;
         map.repeat.y = 1;
     }
 
-    function wrapAndRepeatTextureRamp (map) {
+    function wrapAndRepeatTextureRamp(map) {
         map.wrapS = map.wrapT = THREE.RepeatWrapping;
         map.repeat.x = 3;
         map.repeat.y = 3;
@@ -550,7 +550,7 @@ function Level0Init() {
         const textureLoader = new THREE.TextureLoader();
         //const texture = textureLoader.load("./resources/textures/floors/placeholder.png");
         const texture = textureLoader.load("./resources/textures/floors/ground_grass.jpg");
-        
+
         //dimensions
         const WIDTH = 100;
         const HEIGHT = 1;
@@ -563,27 +563,27 @@ function Level0Init() {
 
         //mesh
         const meshFloor = new THREE.Mesh(geometry, material);
-        meshFloor.position.y=-0.5;
+        meshFloor.position.y = -0.5;
         meshFloor.receiveShadow = true;
         scene.add(meshFloor);
-        
+
         //rigid body
         var bodyDesc = RAPIER.RigidBodyDesc.fixed();
         bodyDesc.setCanSleep(true);
         bodyDesc.setTranslation(meshFloor.position.x, meshFloor.position.y, meshFloor.position.z);
         const rigidBody = world.createRigidBody(bodyDesc);
-        var collider = RAPIER.ColliderDesc.cuboid(WIDTH*0.5, HEIGHT*0.5, LENGTH*0.5);
+        var collider = RAPIER.ColliderDesc.cuboid(WIDTH * 0.5, HEIGHT * 0.5, LENGTH * 0.5);
         world.createCollider(collider, rigidBody);
     }
 
 
     //WALLS
     function wall(startPoint, endPoint) {
-        const wallSize = new THREE.Vector3(Math.abs(endPoint.x-startPoint.x), Math.abs(endPoint.y-startPoint.y), Math.abs(endPoint.z-startPoint.z));
-        const wallPos = new THREE.Vector3((endPoint.x+startPoint.x)/2, (endPoint.y+startPoint.y)/2, (endPoint.z+startPoint.z)/2);
+        const wallSize = new THREE.Vector3(Math.abs(endPoint.x - startPoint.x), Math.abs(endPoint.y - startPoint.y), Math.abs(endPoint.z - startPoint.z));
+        const wallPos = new THREE.Vector3((endPoint.x + startPoint.x) / 2, (endPoint.y + startPoint.y) / 2, (endPoint.z + startPoint.z) / 2);
 
         const geometry = new THREE.BoxGeometry(wallSize.x, wallSize.y, wallSize.z);
-        
+
         //mesh
         const meshWall = new THREE.Mesh(geometry, materialWall);
         meshWall.position.copy(wallPos);
@@ -596,7 +596,7 @@ function Level0Init() {
         bodyDesc.setCanSleep(true);
         bodyDesc.setTranslation(meshWall.position.x, meshWall.position.y, meshWall.position.z);
         const rigidBody = world.createRigidBody(bodyDesc);
-        var collider = RAPIER.ColliderDesc.cuboid(wallSize.x*0.5, wallSize.y*0.5, wallSize.z*0.5);
+        var collider = RAPIER.ColliderDesc.cuboid(wallSize.x * 0.5, wallSize.y * 0.5, wallSize.z * 0.5);
         world.createCollider(collider, rigidBody);
     }
 
@@ -605,7 +605,7 @@ function Level0Init() {
     function torch(lightPos) {
         //mesh
         var model = torchModel.clone();
-        model.position.set(lightPos.x, lightPos.y-1, lightPos.z);
+        model.position.set(lightPos.x, lightPos.y - 1, lightPos.z);
         //model.position.set(0, 4, 30);
         scene.add(model);
 
@@ -613,6 +613,6 @@ function Level0Init() {
         const light = new THREE.PointLight('orange', 1, 10, 2);
         light.castShadow = true;
         light.position.copy(lightPos);
-        scene.add(light); 
-    }   
+        scene.add(light);
+    }
 }
