@@ -178,11 +178,11 @@ function Level3Init() {
     managerTorch.onLoad = function () {
         //when torch model has been loaded. Can clone a bunch of torches in here
         //adding torches to walls
-        torchYRight(new THREE.Vector3(-11.25, 5, 31));
-        torchYLeft(new THREE.Vector3(-9.75, 5, 31));
-        torchX(new THREE.Vector3(-9, 5, -8.75));
-        torchX(new THREE.Vector3(15, 5, -29.75));
-        torchYLeft(new THREE.Vector3(11.25, 5, 35));
+        torch(new THREE.Vector3(-9.75, 5, 31), "left");
+        torch(new THREE.Vector3(-11.25, 5, 31), "right");
+        torch(new THREE.Vector3(-9, 5, -8.75), "normal");
+        torch(new THREE.Vector3(15, 5, -29.75), "normal");
+        torch(new THREE.Vector3(11.25, 5, 35), "left");
 
     }
 
@@ -572,9 +572,19 @@ function Level3Init() {
 
     //TORCHES
     //The light emitted from the torch
-    function torchX(lightPos) {
+    function torch(lightPos, side) {
         //mesh
         var model = torchModel.clone();
+        //model.rotation.y = Math.PI / 2;
+        if (side == "left") {
+            model.rotation.y = Math.PI / 2;
+        }
+        else if (side == "right") {
+            model.rotation.y = -Math.PI / 2;
+        }
+        else {
+            model.rotation.y = 0;
+        }
         model.position.set(lightPos.x, lightPos.y, lightPos.z);
         scene.add(model);
 
@@ -584,34 +594,5 @@ function Level3Init() {
         light.position.copy(lightPos);
         scene.add(light);
     }
-
-    function torchYLeft(lightPos) {
-        //mesh
-        var model = torchModel.clone();
-        model.rotation.y = Math.PI / 2;
-        model.position.set(lightPos.x, lightPos.y, lightPos.z);
-        scene.add(model);
-
-        //light colour and intensity
-        const light = new THREE.PointLight('orange', 3, 10, 2);
-        light.castShadow = true;
-        light.position.copy(lightPos);
-        scene.add(light);
-    }
-
-    function torchYRight(lightPos) {
-        //mesh
-        var model = torchModel.clone();
-        model.rotation.y = 3 * Math.PI / 2;
-        model.position.set(lightPos.x, lightPos.y, lightPos.z);
-        scene.add(model);
-
-        //light colour and intensity
-        const light = new THREE.PointLight('orange', 3, 10, 2);
-        light.castShadow = true;
-        light.position.copy(lightPos);
-        scene.add(light);
-    }
-
 
 }
