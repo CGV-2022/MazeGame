@@ -1,22 +1,22 @@
 //(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
 
-import {EffectComposer} from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/EffectComposer.js';
-import {RenderPass} from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/RenderPass.js';
-import {OutlinePass} from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/OutlinePass.js';
-import {GlitchPass} from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/GlitchPass.js';
+import { EffectComposer } from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/RenderPass.js';
+import { OutlinePass } from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/OutlinePass.js';
+import { GlitchPass } from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/postprocessing/GlitchPass.js';
 
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.module.js';
 import RAPIER from 'https://cdn.skypack.dev/@dimforge/rapier3d-compat';
-import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/controls/OrbitControls.js';
-import {FBXLoader} from 'https://cdn.jsdelivr.net/npm/three@0.118.1/examples/jsm/loaders/FBXLoader.js';
-import {Water} from '/Resources/objects/Water2.js';
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/controls/OrbitControls.js';
+import { FBXLoader } from 'https://cdn.jsdelivr.net/npm/three@0.118.1/examples/jsm/loaders/FBXLoader.js';
+import { Water } from '/Resources/objects/Water2.js';
 
-import {KeyDisplay} from '/js/KeyboardUtility.js';
-import {Player} from '/js/Player.js';
-import {Enemy} from '/js/Enemy.js';
+import { KeyDisplay } from '/js/KeyboardUtility.js';
+import { Player } from '/js/Player.js';
+import { Enemy } from '/js/Enemy.js';
 
 
-export function Level1(){
+export function Level1() {
     RAPIER.init().then(() => {
         Level1Init();
     });
@@ -35,11 +35,11 @@ function Level1Init() {
 
 
     //TIMER
-    var timeLeft = 180;
+    var timeLeft = 120;
     var str = "Time remaining: " + timeLeft;
     lt.textContent = str;
-    
-    function decrementSeconds(){
+
+    function decrementSeconds() {
         timeLeft = timeLeft - 1;
         str = "Time remaining: " + timeLeft;
         lt.textContent = str;
@@ -48,7 +48,7 @@ function Level1Init() {
     function startLevelTimer() {
         intervalID = setInterval(decrementSeconds, 1000);
     }
-    function stopLevelTimer(){
+    function stopLevelTimer() {
         clearInterval(intervalID);
     }
 
@@ -137,27 +137,27 @@ function Level1Init() {
     }
     
     `;
-    
-    
+
+
     //SCENE
     const scene = new THREE.Scene();
 
     //Skybox
     //Used cube geometry to be able to rotate the skybox
-    var skyGeo = new THREE.CubeGeometry(1000 ,1000 ,1000);
+    var skyGeo = new THREE.CubeGeometry(1000, 1000, 1000);
 
     //loading images for the skybox
-    var skyMat =[
+    var skyMat = [
 
-        new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load("Resources/textures/skyboxes/Level2/sleepy/sleepyhollow_ft.jpg"),side:THREE.DoubleSide}),
-        new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load("Resources/textures/skyboxes/Level2/sleepy/sleepyhollow_bk.jpg"),side:THREE.DoubleSide}),
-        new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load("Resources/textures/skyboxes/Level2/sleepy/sleepyhollow_up.jpg"),side:THREE.DoubleSide}),
-        new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load("Resources/textures/skyboxes/Level2/sleepy/sleepyhollow_dn.jpg"),side:THREE.DoubleSide}),
-        new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load("Resources/textures/skyboxes/Level2/sleepy/sleepyhollow_rt.jpg"),side:THREE.DoubleSide}),
-        new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load("Resources/textures/skyboxes/Level2/sleepy/sleepyhollow_lf.jpg"),side:THREE.DoubleSide}),
+        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("Resources/textures/skyboxes/Level2/sleepy/sleepyhollow_ft.jpg"), side: THREE.DoubleSide }),
+        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("Resources/textures/skyboxes/Level2/sleepy/sleepyhollow_bk.jpg"), side: THREE.DoubleSide }),
+        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("Resources/textures/skyboxes/Level2/sleepy/sleepyhollow_up.jpg"), side: THREE.DoubleSide }),
+        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("Resources/textures/skyboxes/Level2/sleepy/sleepyhollow_dn.jpg"), side: THREE.DoubleSide }),
+        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("Resources/textures/skyboxes/Level2/sleepy/sleepyhollow_rt.jpg"), side: THREE.DoubleSide }),
+        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("Resources/textures/skyboxes/Level2/sleepy/sleepyhollow_lf.jpg"), side: THREE.DoubleSide }),
     ];
     var skyMaterial = new THREE.MeshFaceMaterial(skyMat);
-    var sky = new THREE.Mesh(skyGeo,skyMaterial);
+    var sky = new THREE.Mesh(skyGeo, skyMaterial);
     scene.add(sky);
 
 
@@ -179,13 +179,13 @@ function Level1Init() {
     const orbitControls = new OrbitControls(camera, renderer.domElement);
     orbitControls.enableDamping = true;                          //leave commented
     orbitControls.enablePan = false;                             //and set
-    orbitControls.maxPolarAngle = Math.PI/1.9;                   //player rigid body
+    orbitControls.maxPolarAngle = Math.PI / 1.9;                   //player rigid body
     orbitControls.minDistance = 6;                               //at origin    
     //*
     orbitControls.maxDistance = 6;                               //for level editing                
     orbitControls.update();
 
-    
+
     //MINIMAP
     const camera2 = new THREE.OrthographicCamera(-10, 10, 10, -10, 0, 100);
     camera2.position.set(0, 20, 0);
@@ -205,18 +205,18 @@ function Level1Init() {
 
     //LIGHTS
     mainLighting();
-    
+
     //torch();
 
 
     //OBJECTS
     var rigidBodies = [];  //contains dynamic rigid bodies whose mesh needs to be updated
 
-    
+
     //ramp
     const sandTextureLoader = new THREE.TextureLoader();
     const sandTexture = sandTextureLoader.load("./resources/textures/floors/ground_sand.jpg");
-    
+
     const WIDTH = 10;
     const HEIGHT = 1;
     const LENGTH = 40;
@@ -227,18 +227,18 @@ function Level1Init() {
     //mesh
     const meshRamp = new THREE.Mesh(geomRamp, matRamp);
     meshRamp.position.set(0, -6.5, -69);
-    meshRamp.rotation.set(-Math.PI/12, 0, 0);
+    meshRamp.rotation.set(-Math.PI / 12, 0, 0);
     meshRamp.receiveShadow = true;
     //scene.add(meshRamp);
-    
+
     //rigid body
     var bodyDescRamp = RAPIER.RigidBodyDesc.fixed();
     bodyDescRamp.setCanSleep(true);
     bodyDescRamp.setTranslation(meshRamp.position.x, meshRamp.position.y, meshRamp.position.z);
-    const quatRamp = new THREE.Quaternion().setFromEuler( new THREE.Euler(-Math.PI/4, 0, 0, 'XYZ') );
+    const quatRamp = new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI / 4, 0, 0, 'XYZ'));
     bodyDescRamp.setRotation({ x: quatRamp.x, y: quatRamp.y, z: quatRamp.z, w: quatRamp.w });
     const rigidRamp = world.createRigidBody(bodyDescRamp);
-    var colliderRamp = RAPIER.ColliderDesc.cuboid(WIDTH*0.5, HEIGHT*0.5, LENGTH*0.5);
+    var colliderRamp = RAPIER.ColliderDesc.cuboid(WIDTH * 0.5, HEIGHT * 0.5, LENGTH * 0.5);
     world.createCollider(colliderRamp, rigidRamp);
 
 
@@ -249,13 +249,13 @@ function Level1Init() {
     const meshCyl = new THREE.Mesh(geomCyl, matCyl);
     meshCyl.position.set(0, -11, -105);
     //scene.add( meshCyl );
-    
+
     //rigid body
     var bodyDescCyl = RAPIER.RigidBodyDesc.fixed();
     bodyDescCyl.setCanSleep(true);
     bodyDescCyl.setTranslation(meshCyl.position.x, meshCyl.position.y, meshCyl.position.z);
     const rigidCyl = world.createRigidBody(bodyDescCyl);
-    var colliderCyl = RAPIER.ColliderDesc.cylinder(1*0.5, 20);
+    var colliderCyl = RAPIER.ColliderDesc.cylinder(1 * 0.5, 20);
     //world.createCollider(colliderCyl, rigidCyl);
 
 
@@ -285,25 +285,25 @@ function Level1Init() {
     //water
     waterFeature();
 
-    
+
     //Walls
     //texture
     const textureLoader = new THREE.TextureLoader();
     const marble = textureLoader.load("./resources/textures/walls/ancient.jpg");
     const materialWall = new THREE.MeshStandardMaterial({ map: marble, side: THREE.DoubleSide });
     wrapAndRepeatTextureWall(materialWall.map);
-    
+
     //maze walls
     //outer
     wall(new THREE.Vector3(-50, 0, -50), new THREE.Vector3(50, 10, -49));
     wall(new THREE.Vector3(50, 0, -49), new THREE.Vector3(49, 10, 50));
     wall(new THREE.Vector3(49, 0, 50), new THREE.Vector3(-50, 10, 49));
     wall(new THREE.Vector3(-50, 0, 49), new THREE.Vector3(-49, 10, -49));
-    
+
     // //inner
 
     //vertical
-    
+
     wall(new THREE.Vector3(-35, 0, -40), new THREE.Vector3(-34, 5, 50));
 
     wall(new THREE.Vector3(-18, 0, -17), new THREE.Vector3(-17, 5, 1));
@@ -313,7 +313,7 @@ function Level1Init() {
 
     wall(new THREE.Vector3(18, 0, 50), new THREE.Vector3(19, 5, 40));
     wall(new THREE.Vector3(18, 0, -40), new THREE.Vector3(19, 5, 0));
-    
+
     wall(new THREE.Vector3(35, 0, 40), new THREE.Vector3(36, 5, 0));
 
     //horizontal walls
@@ -329,14 +329,14 @@ function Level1Init() {
     wall(new THREE.Vector3(0, 0, 18), new THREE.Vector3(36, 5, 16));
 
     wall(new THREE.Vector3(-17, 0, 39), new THREE.Vector3(19, 5, 40));
-  
-    
+
+
 
     //Torches
     var torchModel;
 
     const managerTorch = new THREE.LoadingManager();
-    managerTorch.onLoad = function() { //when torch model has been loaded. Can clone a bunch of torches in here
+    managerTorch.onLoad = function () { //when torch model has been loaded. Can clone a bunch of torches in here
         //torch(new THREE.Vector3(0, 5, 30.5));
         //torch(new THREE.Vector3(0, 5, 40));
     }
@@ -344,10 +344,10 @@ function Level1Init() {
     const loaderTorch = new FBXLoader(managerTorch);
     loaderTorch.setPath('./Resources/models/Torch/');
     loaderTorch.load('Torch.fbx', (fbx) => {
-      const model = fbx;
-      fbx.scale.setScalar(0.02);
+        const model = fbx;
+        fbx.scale.setScalar(0.02);
 
-      torchModel = model;
+        torchModel = model;
     })
 
 
@@ -370,7 +370,7 @@ function Level1Init() {
         //rigid body                                                               
         //player initial position
         var bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(20, 0.9, 30);
-        const q = new THREE.Quaternion().setFromEuler( new THREE.Euler(0, model.rotation.y, 0, 'XYZ') );
+        const q = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, model.rotation.y, 0, 'XYZ'));
         bodyDesc.setRotation({ x: q.x, y: q.y, z: q.z, w: q.w });
         var rigidBody = world.createRigidBody(bodyDesc);
         var dynamicCollider = RAPIER.ColliderDesc.ball(0.9);
@@ -383,19 +383,19 @@ function Level1Init() {
         const animationsMap = new Map();
 
         const manager = new THREE.LoadingManager();
-        manager.onLoad = function() { //when all animations have been loaded
+        manager.onLoad = function () { //when all animations have been loaded
             //pass model, mixer and animations to character controller
-            player = new Player(model, mixer, animationsMap, orbitControls, camera, camera2, rigidBody, 
-                new RAPIER.Ray( 
+            player = new Player(model, mixer, animationsMap, orbitControls, camera, camera2, rigidBody,
+                new RAPIER.Ray(
                     rigidBody.translation(),
-                    { x: 0, y: -1, z: 0} 
-                ), 
-                new RAPIER.Ray( 
+                    { x: 0, y: -1, z: 0 }
+                ),
+                new RAPIER.Ray(
                     rigidBody.translation(),
-                    { x: 0, y: 0, z: -1 } 
+                    { x: 0, y: 0, z: -1 }
                 )
             );
-            startLevelTimer();  
+            startLevelTimer();
         };
 
 
@@ -412,11 +412,11 @@ function Level1Init() {
         const OnLoad = (animName, anim) => {
             const clip = anim.animations[0];
             const animAction = mixer.clipAction(clip);
-            
+
             //make death animation not loop when it's done
             if (animName == 'Death') {
                 animAction.loop = THREE.LoopOnce;
-                animAction.clampWhenFinished=true;
+                animAction.clampWhenFinished = true;
             }
 
             animationsMap.set(animName, animAction);
@@ -443,12 +443,12 @@ function Level1Init() {
         //rigid body                                                                
         //enemy initial position
         var bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(-10, 0.5, -10);
-        const q = new THREE.Quaternion().setFromEuler( new THREE.Euler(0, model.rotation.y, 0, 'XYZ') );
+        const q = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, model.rotation.y, 0, 'XYZ'));
         bodyDesc.setRotation({ x: q.x, y: q.y, z: q.z, w: q.w });
         var rigidBody = world.createRigidBody(bodyDesc);
         var dynamicCollider = RAPIER.ColliderDesc.ball(1.1);
         world.createCollider(dynamicCollider, rigidBody);
-        
+
 
 
         //load animations, store in map and add to mixer
@@ -470,21 +470,21 @@ function Level1Init() {
             //make death animation not loop when it's done
             if (animName == 'Death') {
                 animAction.loop = THREE.LoopOnce;
-                animAction.clampWhenFinished=true;
+                animAction.clampWhenFinished = true;
             }
 
 
             animationsMap.set(animName, animAction);
             if (animName == 'Death') { //if all animations have been loaded
                 //make enemy object
-                enemy = new Enemy(model, mixer, animationsMap, rigidBody, 
-                    new RAPIER.Ray( 
+                enemy = new Enemy(model, mixer, animationsMap, rigidBody,
+                    new RAPIER.Ray(
                         rigidBody.translation(),
-                        { x: 0, y: -1, z: 0} 
-                    ), 
-                    new RAPIER.Ray( 
+                        { x: 0, y: -1, z: 0 }
+                    ),
+                    new RAPIER.Ray(
                         rigidBody.translation(),
-                        { x: 0, y: 0, z: 1 } 
+                        { x: 0, y: 0, z: 1 }
                     )
                 );
             }
@@ -494,44 +494,44 @@ function Level1Init() {
 
 
     //PLAYER CONTROLS
-    const keysPressed = {'w': false, 'a': false, 's': false, 'd': false, 'q': false, 'e': false};
+    const keysPressed = { 'w': false, 'a': false, 's': false, 'd': false, 'q': false, 'e': false };
     const keyDisplayQueue = new KeyDisplay();
 
     document.addEventListener('keydown', (event) => {
-        keyDisplayQueue.down(event.key);          
-        keysPressed[event.key.toLowerCase()] = true ;   
-        
+        keyDisplayQueue.down(event.key);
+        keysPressed[event.key.toLowerCase()] = true;
+
     }, false);
     document.addEventListener('keyup', (event) => {
-        keyDisplayQueue.up(event.key);                 
-        keysPressed[event.key.toLowerCase()] = false;  
+        keyDisplayQueue.up(event.key);
+        keysPressed[event.key.toLowerCase()] = false;
 
     }, false);
 
     //3RD AND 1ST PERSON
     var firstPerson = false;
     document.addEventListener('keypress', (event) => {
-        if (event.key.toLowerCase()=='t' && player) {
+        if (event.key.toLowerCase() == 't' && player) {
             firstPerson = !firstPerson;
 
-            if(firstPerson==true) {
-                camera.position.set(player.model.position.x, player.model.position.y + 3, player.model.position.z-1.5);
-                orbitControls.minDistance=0;
-                orbitControls.maxDistance=0.6;
-                player.firstPerson=true;
-                
+            if (firstPerson == true) {
+                camera.position.set(player.model.position.x, player.model.position.y + 3, player.model.position.z - 1.5);
+                orbitControls.minDistance = 0;
+                orbitControls.maxDistance = 0.6;
+                player.firstPerson = true;
+
             }
             else {
                 camera.position.set(0, 5, 6);
-                orbitControls.minDistance=6;
-                orbitControls.maxDistance=7; 
-                player.firstPerson=false;
+                orbitControls.minDistance = 6;
+                orbitControls.maxDistance = 7;
+                player.firstPerson = false;
             }
         }
 
-        if (event.key.toLowerCase()=='r' && player) {
-            
-            
+        if (event.key.toLowerCase() == 'r' && player) {
+
+
         }
     }, false);
 
@@ -540,14 +540,14 @@ function Level1Init() {
     const clock = new THREE.Clock();
     var paused = false;
     document.addEventListener('keypress', (event) => {
-        if (event.key.toLowerCase()=='p') {
+        if (event.key.toLowerCase() == 'p') {
             paused = !paused;
 
-            if(paused) {
+            if (paused) {
                 stopLevelTimer();
                 clock.stop();
                 ps.style.display = 'flex';
-                
+
             }
             else {
                 startLevelTimer();
@@ -555,33 +555,34 @@ function Level1Init() {
                 ps.style.display = 'none';
             }
         }
-        
+
     }, false);
 
     //SHADER for moon
     const texLoad = new THREE.TextureLoader();
-    const textureS = texLoad.load( 'Resources/textures/moon/moonColourMap.jpeg' );
-    const textureD = texLoad.load('Resources/textures/moon/moonBumpMap.jpeg' );
+    const textureS = texLoad.load('Resources/textures/moon/moonColourMap.jpeg');
+    const textureD = texLoad.load('Resources/textures/moon/moonBumpMap.jpeg');
     const material1 = new THREE.RawShaderMaterial({
-        vertexShader:_VS,
-        fragmentShader:_FS,
-        transparent:true,
+        vertexShader: _VS,
+        fragmentShader: _FS,
+        transparent: true,
         uniforms:
         {
-        uFrequency:{value:new THREE.Vector2(10,5)},
-        uTime: {value:0},
-        mouse:{value:new THREE.Vector3()},
-            uTexture:{value:textureS},
-            displacement:{value:textureD},
-        uColor:{value: new THREE.Color('#ffffff')}  }
+            uFrequency: { value: new THREE.Vector2(10, 5) },
+            uTime: { value: 0 },
+            mouse: { value: new THREE.Vector3() },
+            uTexture: { value: textureS },
+            displacement: { value: textureD },
+            uColor: { value: new THREE.Color('#ffffff') }
+        }
     });
     textureD.wrapS = textureD.wrapT = THREE.RepeatWrapping;
     textureS.wrapS = textureS.wrapT = THREE.RepeatWrapping;
 
     //moon shape and material
-    const moonGeo = new THREE.SphereGeometry(15,40,20);
-    const moonMesh = new THREE.Mesh(moonGeo,material1);
-    moonMesh.position.set(50,30,40);
+    const moonGeo = new THREE.SphereGeometry(15, 40, 20);
+    const moonMesh = new THREE.Mesh(moonGeo, material1);
+    moonMesh.position.set(50, 30, 40);
     moonMesh.castShadow = true;
     sky.add(moonMesh);
 
@@ -595,7 +596,7 @@ function Level1Init() {
     const planetMat = new THREE.MeshStandardMaterial({ map: planetTexture });
     //creation on planet
     var Planet = new THREE.Mesh(planetGeom, planetMat);
-    Planet.position.set(-30,25, -50);
+    Planet.position.set(-30, 25, -50);
     Planet.castShadow = true;
     //added to sky to be able to rotate with skybox
     sky.add(Planet);
@@ -606,27 +607,27 @@ function Level1Init() {
         if (!paused) {
             var deltaTime = clock.getDelta();
             sky.rotation.y += 0.002;
-            
-        
+
+
             if (enemy && player) {
                 player.update(world, deltaTime, keysPressed, enemy);
                 enemy.update(world, deltaTime, player);
 
-                if(enemy.death==true) {                                          //if player kills enemy, they win and are invincible
+                if (enemy.death == true) {                                          //if player kills enemy, they win and are invincible
                     stopLevelTimer();
                     dub.style.display = 'flex';
 
                     player.win = true;
                 }
-                if (timeLeft<=0 || player.death==true) {                         //if time runs out or they were killed they die
+                if (timeLeft <= 0 || player.death == true) {                         //if time runs out or they were killed they die
                     stopLevelTimer();
-                    player.death=true; //if timer runs out need to do this
+                    player.death = true; //if timer runs out need to do this
 
                     loss.style.display = 'flex';
                 }
 
                 //if spawn point must change when player reaches a certain location
-                if(player.model.position.z<-50) {
+                if (player.model.position.z < -50) {
                     player.spawnPoint.set(0, 0.9, -52);
                 }
             }
@@ -640,11 +641,11 @@ function Level1Init() {
                 rigidBodies[i].mesh.position.x = position.x;
                 rigidBodies[i].mesh.position.y = position.y;
                 rigidBodies[i].mesh.position.z = position.z;
-                rigidBodies[i].mesh.setRotationFromQuaternion(new THREE.Quaternion(rotation.x,rotation.y,rotation.z,rotation.w));
-            }    
+                rigidBodies[i].mesh.setRotationFromQuaternion(new THREE.Quaternion(rotation.x, rotation.y, rotation.z, rotation.w));
+            }
         }
 
-        
+
         orbitControls.update();
         renderer.render(scene, camera);
         composer.render();
@@ -661,7 +662,7 @@ function Level1Init() {
     function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);        
+        renderer.setSize(window.innerWidth, window.innerHeight);
     }
     window.addEventListener('resize', onWindowResize);
 
@@ -688,18 +689,18 @@ function Level1Init() {
 
 
     //REPEATING TEXTURES
-    function wrapAndRepeatTextureFloor (map) {
+    function wrapAndRepeatTextureFloor(map) {
         map.wrapS = map.wrapT = THREE.RepeatWrapping;
         map.repeat.x = map.repeat.y = 20;
     }
 
-    function wrapAndRepeatTextureWall (map) {
+    function wrapAndRepeatTextureWall(map) {
         map.wrapS = map.wrapT = THREE.RepeatWrapping;
         map.repeat.x = 3;
         map.repeat.y = 1;
     }
 
-    function wrapAndRepeatTextureRamp (map) {
+    function wrapAndRepeatTextureRamp(map) {
         map.wrapS = map.wrapT = THREE.RepeatWrapping;
         map.repeat.x = 3;
         map.repeat.y = 3;
@@ -708,13 +709,13 @@ function Level1Init() {
 
     //FLOOR
     function floor() {
-    
+
 
         //textures
         const textureLoader = new THREE.TextureLoader();
         //const texture = textureLoader.load("./resources/textures/floors/placeholder.png");
         const texture = textureLoader.load("./resources/textures/floors/clay.jpg");
-        
+
         //dimensions
         const WIDTH = 100;
         const HEIGHT = 1;
@@ -727,27 +728,27 @@ function Level1Init() {
 
         //mesh
         const meshFloor = new THREE.Mesh(geometry, material);
-        meshFloor.position.y=-0.5;
+        meshFloor.position.y = -0.5;
         meshFloor.receiveShadow = true;
         scene.add(meshFloor);
-        
+
         //rigid body
         var bodyDesc = RAPIER.RigidBodyDesc.fixed();
         bodyDesc.setCanSleep(true);
         bodyDesc.setTranslation(meshFloor.position.x, meshFloor.position.y, meshFloor.position.z);
         const rigidBody = world.createRigidBody(bodyDesc);
-        var collider = RAPIER.ColliderDesc.cuboid(WIDTH*0.5, HEIGHT*0.5, LENGTH*0.5);
+        var collider = RAPIER.ColliderDesc.cuboid(WIDTH * 0.5, HEIGHT * 0.5, LENGTH * 0.5);
         world.createCollider(collider, rigidBody);
     }
 
 
     //WALLS
     function wall(startPoint, endPoint) {
-        const wallSize = new THREE.Vector3(Math.abs(endPoint.x-startPoint.x), Math.abs(endPoint.y-startPoint.y), Math.abs(endPoint.z-startPoint.z));
-        const wallPos = new THREE.Vector3((endPoint.x+startPoint.x)/2, (endPoint.y+startPoint.y)/2, (endPoint.z+startPoint.z)/2);
+        const wallSize = new THREE.Vector3(Math.abs(endPoint.x - startPoint.x), Math.abs(endPoint.y - startPoint.y), Math.abs(endPoint.z - startPoint.z));
+        const wallPos = new THREE.Vector3((endPoint.x + startPoint.x) / 2, (endPoint.y + startPoint.y) / 2, (endPoint.z + startPoint.z) / 2);
 
         const geometry = new THREE.BoxGeometry(wallSize.x, wallSize.y, wallSize.z);
-        
+
         //mesh
         const meshWall = new THREE.Mesh(geometry, materialWall);
         meshWall.position.copy(wallPos);
@@ -760,39 +761,39 @@ function Level1Init() {
         bodyDesc.setCanSleep(true);
         bodyDesc.setTranslation(meshWall.position.x, meshWall.position.y, meshWall.position.z);
         const rigidBody = world.createRigidBody(bodyDesc);
-        var collider = RAPIER.ColliderDesc.cuboid(wallSize.x*0.5, wallSize.y*0.5, wallSize.z*0.5);
+        var collider = RAPIER.ColliderDesc.cuboid(wallSize.x * 0.5, wallSize.y * 0.5, wallSize.z * 0.5);
         world.createCollider(collider, rigidBody);
     }
 
- 
+
 
     //Water feature
     function waterFeature() {
         //water geometry shape
-        const waterGeometry = new THREE.BoxGeometry( 20, 19, 1 );
+        const waterGeometry = new THREE.BoxGeometry(20, 19, 1);
 
         //flow map used to navigate the direction on water flow
         const flowTextureLoader = new THREE.TextureLoader();
-        const flowMap = flowTextureLoader.load( 'Resources/textures/water/flowmap.jpeg' );
+        const flowMap = flowTextureLoader.load('Resources/textures/water/flowmap.jpeg');
 
 
         //properties for water feature
-        const water = new Water( waterGeometry, {
+        const water = new Water(waterGeometry, {
             scale: 1,
-            color:0x09F9F0,
+            color: 0x09F9F0,
             textureWidth: 512,
             textureHeight: 512,
             flowMap: flowMap,
 
-        } );
+        });
 
         //setting featurre position
         water.position.y = 0.2;
         water.position.x = -7;
         water.position.z = 30;
         water.rotation.x = Math.PI * - 0.5;
-        
-        scene.add( water );
+
+        scene.add(water);
     }
 
 

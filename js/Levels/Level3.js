@@ -34,7 +34,7 @@ function Level3Init() {
 
 
     //TIMER
-    var timeLeft = 90;
+    var timeLeft = 120;
     var str = "Time remaining: " + timeLeft;
     lt.textContent = str;
 
@@ -177,7 +177,7 @@ function Level3Init() {
     const managerTorch = new THREE.LoadingManager();
     managerTorch.onLoad = function () {
         //when torch model has been loaded. Can clone a bunch of torches in here
-        //ading torches to walls
+        //adding torches to walls
         torchYRight(new THREE.Vector3(-11.25, 5, 31));
         torchYLeft(new THREE.Vector3(-9.75, 5, 31));
         torchX(new THREE.Vector3(-9, 5, -8.75));
