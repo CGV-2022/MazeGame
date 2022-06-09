@@ -23,7 +23,7 @@ export function Level2(){
 }
 function Level2Init() {
     //INIT UI ELEMENTS
-    var ps = document.getElementById('Pause1');
+    var ps = document.getElementById('Pause13');
     //ps.textContent = "";
     var lt = document.getElementById('LevelTimer');
     lt.textContent = "";

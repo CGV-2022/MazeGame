@@ -24,7 +24,7 @@ export function Level1(){
 }
 function Level1Init() {
     //INIT UI ELEMENTS
-    var ps = document.getElementById('Pause1');
+    var ps = document.getElementById('Pause12');
     //ps.textContent = "";
     var lt = document.getElementById('LevelTimer');
     lt.textContent = "";

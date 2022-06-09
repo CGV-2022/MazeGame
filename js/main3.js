@@ -20,21 +20,12 @@ document.getElementById("btnMainW2").onclick = function () {
     location.href = "index.html";
 };
 
-document.getElementById("btnMainR").onclick = function () {
-    location.href = "buttonRestart1.html"
-};
-
-document.getElementById("btnMainR2").onclick = function () {
-    location.href = "buttonRestart2.html";
-};
 
 document.getElementById("btnMainR3").onclick = function () {
     location.href = "buttonRestart3.html";
 };
 
-document.getElementById("btnMainR4").onclick = function () {
-    location.href = "buttonRestart4.html";
-};
+
 
 
 
