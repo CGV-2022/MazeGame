@@ -1,5 +1,5 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.module.js';
-import { A, D, DIRECTIONS, S, W} from './KeyboardUtility.js';
+import { A, D, DIRECTIONS, S, W} from '../js/KeyboardUtility.js';
 
 export class Player {
     //3D WORLD

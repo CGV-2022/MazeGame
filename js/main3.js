@@ -1,6 +1,7 @@
-import {Level1} from './Levels/Level1.js';
-import {Level2} from './Levels/Level2.js';
-import {Level3} from './Levels/Level3.js';
+import {Level1} from '../js/Levels/Level1.js';
+import {Level2} from '../js/Levels/Level2.js';
+import {Level3} from '../js/Levels/Level3.js';
+import {Level4} from '../js/Levels/Level4.js';
 
 
 
