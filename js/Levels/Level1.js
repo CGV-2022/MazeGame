@@ -237,7 +237,7 @@ function Level1Init() {
         scene.add(model);
 
         //rigid body                                                               //player initial position
-        var bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(0, 0.9, -55); //(0, 0.9, 40)
+        var bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(0, 0.9, 40);
         const q = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, model.rotation.y, 0, 'XYZ'));
         bodyDesc.setRotation({ x: q.x, y: q.y, z: q.z, w: q.w });
         var rigidBody = world.createRigidBody(bodyDesc);
