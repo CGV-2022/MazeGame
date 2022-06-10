@@ -5,4 +5,12 @@ The goal of the game is to make your way through the game, finding the exit of t
 Created in three.js.
 
 To run:
-* Download files from main branch and direct to main folder and run the index.html on a live server.
+* Download folder from main branch.
+    
+* Direct to the MazeGame-main folder directly which will have inside the index.html and run the index.html file on a live server. 
+     
+* Parts of the game are imported from external resources and not saved directly in the files.
+     
+* To return to the main menu from a level, please click on restart the level first and then return to the main menu.
+     
+* Hope you enjoy the game, goodluck!!
