@@ -7,23 +7,23 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.mod
 import RAPIER from 'https://cdn.skypack.dev/@dimforge/rapier3d-compat';
 import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/controls/OrbitControls.js';
 import { FBXLoader } from 'https://cdn.jsdelivr.net/npm/three@0.118.1/examples/jsm/loaders/FBXLoader.js';
-import { Water } from '/Resources/objects/Water2.js';
 
 import { KeyDisplay } from '/js/KeyboardUtility.js';
 import { Player } from '/js/Player.js';
 import { Enemy } from '/js/Enemy.js';
 
-export function Level3() {
+
+export function Level4() {
     RAPIER.init().then(() => {
-        Level3Init();
+        Level4Init();
     });
 
 }
-function Level3Init() {
+function Level4Init() {
     //INIT UI ELEMENTS
-    var ps = document.getElementById('Pause13');
+    var ps = document.getElementById('Pause14');
     var lt = document.getElementById('LevelTimer');
-    const dub = document.getElementById('Win1');
+    const dub = document.getElementById('Win2');
     const loss = document.getElementById('Lose1');
 
     //TIMER
@@ -44,6 +44,7 @@ function Level3Init() {
         clearInterval(intervalID);
     }
 
+
     //INIT PHYSICS
     var gravity = { x: 0.0, y: -9.81, z: 0.0 };
     var world = new RAPIER.World(gravity);
@@ -52,42 +53,40 @@ function Level3Init() {
 
     //SCENE
     const scene = new THREE.Scene();
-
     //Skybox
     const loaderSky = new THREE.CubeTextureLoader();
-
-    //loading images for the skybox
-    loaderSky.setPath('./Resources/textures/skyboxes/Level3/');
+    loaderSky.setPath('./Resources/textures/skyboxes/Level4/');
     const texture = loaderSky.load([
-        'divine_ft.jpg',
-        'divine_bk.jpg',
-        'divine_up.jpg',
-        'divine_dn.jpg',
-        'divine_rt.jpg',
-        'divine_lf.jpg',
+        'px.png',
+        'nx.png',
+        'py.png',
+        'ny.png',
+        'pz.png',
+        'nz.png',
     ]);
     scene.background = texture;
 
+
     //CAMERA
     const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
-    //camera.position.set(0, 5, 6);                               
-    //camera.position.set(0, 150, 0);                           
+    camera.position.set(0, 5, 6);                                
+    //camera.position.set(0, 150, 0);                            
 
     //RENDERER
     var options = { antialias: false };
     const renderer = new THREE.WebGLRenderer(options);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.enabled = false;
     //renderer.shadowMap.type = THREE.PCFSoftShadowMap;            
 
     //CONTROLS
     const orbitControls = new OrbitControls(camera, renderer.domElement);
     orbitControls.enableDamping = true;                          
-    orbitControls.enablePan = false;                           
+    orbitControls.enablePan = false;                            
     orbitControls.maxPolarAngle = Math.PI / 1.9;                   
-    orbitControls.minDistance = 6;                               
-    orbitControls.maxDistance = 6;                                          
+    orbitControls.minDistance = 6;                              
+    orbitControls.maxDistance = 6;                                              
     orbitControls.update();
 
 
@@ -128,137 +127,86 @@ function Level3Init() {
         battleMusic.setLoop(true);
         battleMusic.setVolume(0.2);
     });
-
-
-    var soundThunder = new THREE.Audio(listener);
-    const audioLoader3 = new THREE.AudioLoader();
-    audioLoader3.load("Resources/media/Thunder.mp3", function (buffer) {
-        soundThunder.setBuffer(buffer);
-        soundThunder.setLoop(true);
-        soundThunder.setVolume(0.01);
-        soundThunder.play();
-    });
     
 
     //LIGHTS
     mainLighting();
 
-    
-    //RAIN & THUNDER FEATURE
-    let rain, rainGeo, rainCount = 2500, flash;
-    rainGeo = new THREE.Geometry();     //geometry of rain drops
-    for (let i = 0; i < rainCount; i++) {
-        const raindrop = new THREE.Vector3(
-            Math.random() * 300 - 150,
-            Math.random() * 200 - 100,
-            Math.random() * 300 - 150,
-        );
-        raindrop.velocity = {};
-        raindrop.velocity = 0;
-        rainGeo.vertices.push(raindrop);
-    }
-
-    const rainMaterial = new THREE.PointsMaterial({
-        color: 0xaaaaaa,
-        size: 0.1,
-        transparent: true,
-    });
-
-    //combine rain material and rain shape
-    rain = new THREE.Points(rainGeo, rainMaterial);
-    rain.castShadow = false;
-    rain.receiveShadow = false;
-    scene.add(rain);
-
-    //random flash using point light to create lightning
-    flash = new THREE.PointLight(0x062d89, 30, 500, 1.7);
-    flash.position.set(200, 300, 100);
-    scene.add(flash);
-
-
 
     //OBJECTS
     var rigidBodies = [];  //contains dynamic rigid bodies whose mesh needs to be updated
 
-
-    //ramp
-    const sandTextureLoader = new THREE.TextureLoader();
-    const sandTexture = sandTextureLoader.load("./resources/textures/floors/ground_greyPebbles.jpg");
-
-    const WIDTH = 10;
-    const HEIGHT = 1;
-    const LENGTH = 40;
-    const geomRamp = new THREE.BoxGeometry(WIDTH, HEIGHT, LENGTH);
-    const matRamp = new THREE.MeshStandardMaterial({ map: sandTexture });
-    wrapAndRepeatTextureRamp(matRamp.map);
-
-    //mesh
-    const meshRamp = new THREE.Mesh(geomRamp, matRamp);
-    meshRamp.position.set(0, -6.5, -69);
-    meshRamp.rotation.set(-Math.PI / 12, 0, 0);
-    meshRamp.receiveShadow = true;
-    scene.add(meshRamp);
-
-    //rigid body
-    var bodyDescRamp = RAPIER.RigidBodyDesc.fixed();
-    bodyDescRamp.setCanSleep(true);
-    bodyDescRamp.setTranslation(meshRamp.position.x, meshRamp.position.y, meshRamp.position.z);
-    const quatRamp = new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI / 12, 0, 0, 'XYZ'));
-    bodyDescRamp.setRotation({ x: quatRamp.x, y: quatRamp.y, z: quatRamp.z, w: quatRamp.w });
-    const rigidRamp = world.createRigidBody(bodyDescRamp);
-    var colliderRamp = RAPIER.ColliderDesc.cuboid(WIDTH * 0.5, HEIGHT * 0.5, LENGTH * 0.5);
-    world.createCollider(colliderRamp, rigidRamp);
-
-    //arena
-    //mesh
-    const geomCyl = new THREE.CylinderGeometry(20, 20, 1, 32);
-    const matCyl = matRamp;
-    const meshCyl = new THREE.Mesh(geomCyl, matCyl);
-    meshCyl.position.set(0, -11, -105);
-    scene.add(meshCyl);
-
-    //rigid body
-    var bodyDescCyl = RAPIER.RigidBodyDesc.fixed();
-    bodyDescCyl.setCanSleep(true);
-    bodyDescCyl.setTranslation(meshCyl.position.x, meshCyl.position.y, meshCyl.position.z);
-    const rigidCyl = world.createRigidBody(bodyDescCyl);
-    var colliderCyl = RAPIER.ColliderDesc.cylinder(1 * 0.5, 20);
-    world.createCollider(colliderCyl, rigidCyl);
-
-
     //Floor
     floor();
-
-    //Water
-    waterFeature();
 
     //Walls
     //texture
     const textureLoader = new THREE.TextureLoader();
-    const marble = textureLoader.load("./resources/textures/walls/marble.jpg");
-    const materialWall = new THREE.MeshStandardMaterial({ map: marble, side: THREE.DoubleSide });
+    const brick = textureLoader.load("./resources/textures/walls/stone_wall.jpg");
+    const materialWall = new THREE.MeshStandardMaterial({ map: brick, side: THREE.DoubleSide });
     wrapAndRepeatTextureWall(materialWall.map);
 
     //maze walls
     //outer
-    wall(new THREE.Vector3(-50, 0, -50), new THREE.Vector3(-5, 10, -49));
-    wall(new THREE.Vector3(5, 0, -50), new THREE.Vector3(50, 10, -49));
+    wall(new THREE.Vector3(-50, 0, -50), new THREE.Vector3(50, 10, -49));
     wall(new THREE.Vector3(50, 0, -49), new THREE.Vector3(49, 10, 50));
     wall(new THREE.Vector3(49, 0, 50), new THREE.Vector3(-50, 10, 49));
     wall(new THREE.Vector3(-50, 0, 49), new THREE.Vector3(-49, 10, -49));
 
     //inner
-    wall(new THREE.Vector3(-34, 0, -33), new THREE.Vector3(-33, 10, 33));
-    wall(new THREE.Vector3(16, 0, 9), new THREE.Vector3(1, 10, 8));
-    wall(new THREE.Vector3(33, 0, -33), new THREE.Vector3(32, 10, 50));
+    wall(new THREE.Vector3(-39, 0, -39), new THREE.Vector3(40, 10, -40));
+    wall(new THREE.Vector3(10, 0, 39), new THREE.Vector3(40, 10, 40));
+    wall(new THREE.Vector3(40, 0, 20), new THREE.Vector3(41, 10, 40));
+    wall(new THREE.Vector3(40, 0, 19), new THREE.Vector3(49, 10, 20));
+    wall(new THREE.Vector3(10, 0, -20), new THREE.Vector3(11, 10, 39));
+    wall(new THREE.Vector3(0, 0, 20), new THREE.Vector3(1, 10, 49));
+    wall(new THREE.Vector3(-10, 0, 39), new THREE.Vector3(-40, 10, 40));
+    wall(new THREE.Vector3(-10, 0, 0), new THREE.Vector3(-11, 10, 39));
+    wall(new THREE.Vector3(-10, 0, 0), new THREE.Vector3(10, 10, 1));
+    wall(new THREE.Vector3(-11, 0, 19), new THREE.Vector3(-20, 10, 20));
+    wall(new THREE.Vector3(-40, 0, 30), new THREE.Vector3(-30, 10, 31));
+    wall(new THREE.Vector3(-30, 0, 30), new THREE.Vector3(-31, 10, 10));
+    wall(new THREE.Vector3(-31, 0, 9), new THREE.Vector3(-20, 10, 10));
+    wall(new THREE.Vector3(-39, 0, 30), new THREE.Vector3(-40, 10, -40));
+    wall(new THREE.Vector3(-39, 0, -9), new THREE.Vector3(0, 10, -10));
+    wall(new THREE.Vector3(-20, 0, -49), new THREE.Vector3(-21, 10, -40));
+    wall(new THREE.Vector3(-1, 0, -10), new THREE.Vector3(0, 10, -20));
+    wall(new THREE.Vector3(-10, 0, -20), new THREE.Vector3(-30, 10, -21));
+    wall(new THREE.Vector3(-20, 0, -21), new THREE.Vector3(-21, 10, -10));
+    wall(new THREE.Vector3(-10, 0, -21), new THREE.Vector3(-11, 10, -30));
+    wall(new THREE.Vector3(-30, 0, -21), new THREE.Vector3(-29, 10, -30));
+    wall(new THREE.Vector3(-11, 0, -30), new THREE.Vector3(20, 10, -31));
+    wall(new THREE.Vector3(30, 0, -39), new THREE.Vector3(31, 10, -10));
+    wall(new THREE.Vector3(31, 0, -9), new THREE.Vector3(20, 10, -10));
+    wall(new THREE.Vector3(31, 0, -20), new THREE.Vector3(40, 10, -19));
+    wall(new THREE.Vector3(20, 0, -10), new THREE.Vector3(21, 10, 20));
+    wall(new THREE.Vector3(20, 0, 20), new THREE.Vector3(30, 10, 21));
+    wall(new THREE.Vector3(30, 0, 10), new THREE.Vector3(31, 10, 21));
 
-    wall(new THREE.Vector3(17, 0, -50), new THREE.Vector3(16, 10, 33));
 
-    wall(new THREE.Vector3(0, 0, -33), new THREE.Vector3(1, 10, 9));
-    wall(new THREE.Vector3(-33, 0, -33), new THREE.Vector3(0, 10, -32));
-    wall(new THREE.Vector3(-17, 0, -17), new THREE.Vector3(-16, 10, 33));
+    //Torches
+    var torchModel;
 
-    wall(new THREE.Vector3(-17, 0, 33), new THREE.Vector3(0, 10, 32));
+    const managerTorch = new THREE.LoadingManager();
+    managerTorch.onLoad = function () {
+        //when torch model has been loaded. Can clone a bunch of torches in here
+        //adding torches to walls
+        torch(new THREE.Vector3(-9.75, 5, 31), "left");
+        torch(new THREE.Vector3(-11.25, 5, 31), "right");
+        torch(new THREE.Vector3(-9, 5, -8.75), "normal");
+        torch(new THREE.Vector3(15, 5, -29.75), "normal");
+        torch(new THREE.Vector3(11.25, 5, 35), "left");
+
+    }
+
+    const loaderTorch = new FBXLoader(managerTorch);
+    loaderTorch.setPath('./Resources/models/Torch/');
+    loaderTorch.load('Torch.fbx', (fbx) => {
+        const model = fbx;
+        fbx.scale.setScalar(0.02);
+
+        torchModel = model;
+    });
 
 
 
@@ -277,14 +225,14 @@ function Level3Init() {
         model.rotation.y = -Math.PI;
         scene.add(model);
 
-        //rigid body                                                               
-        //player initial position
-        var bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(40, 1.5, 40);
+        //rigid body                                                               //player initial position
+        var bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(0, 0.9, 10);
         const q = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, model.rotation.y, 0, 'XYZ'));
         bodyDesc.setRotation({ x: q.x, y: q.y, z: q.z, w: q.w });
         var rigidBody = world.createRigidBody(bodyDesc);
         var dynamicCollider = RAPIER.ColliderDesc.ball(0.9);
         world.createCollider(dynamicCollider, rigidBody);
+
 
 
         //load animations, store in map and add to mixer
@@ -306,6 +254,7 @@ function Level3Init() {
             );
             startLevelTimer();
         };
+
 
         //load animations
         const loaderAnimations = new FBXLoader(manager);
@@ -332,6 +281,7 @@ function Level3Init() {
     });
 
 
+
     //enemy model with animations
     var enemy;
     const loaderEnemy = new FBXLoader();
@@ -346,14 +296,14 @@ function Level3Init() {
         });
         scene.add(model);
 
-        //rigid body                                                                
-        //enemy initial position
-        var bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(0, -9.9, -105);
+        //rigid body                                                                //enemy initial position
+        var bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(40, 0.9, 0);
         const q = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, model.rotation.y, 0, 'XYZ'));
         bodyDesc.setRotation({ x: q.x, y: q.y, z: q.z, w: q.w });
         var rigidBody = world.createRigidBody(bodyDesc);
         var dynamicCollider = RAPIER.ColliderDesc.ball(1.1);
         world.createCollider(dynamicCollider, rigidBody);
+
 
 
         //load animations, store in map and add to mixer
@@ -378,6 +328,7 @@ function Level3Init() {
                 animAction.clampWhenFinished = true;
             }
 
+
             animationsMap.set(animName, animAction);
             if (animName == 'Death') { //if all animations have been loaded
                 //make enemy object
@@ -396,6 +347,7 @@ function Level3Init() {
     });
 
 
+
     //PLAYER CONTROLS
     const keysPressed = { 'w': false, 'a': false, 's': false, 'd': false, 'q': false, 'e': false };
     const keyDisplayQueue = new KeyDisplay();
@@ -411,6 +363,7 @@ function Level3Init() {
 
     }, false);
 
+
     //3RD AND 1ST PERSON
     var firstPerson = false;
     document.addEventListener('keypress', (event) => {
@@ -418,7 +371,7 @@ function Level3Init() {
             firstPerson = !firstPerson;
 
             if (firstPerson == true) {
-                camera.position.set(player.model.position.x, player.model.position.y + 2.5, player.model.position.z - 1, 5);
+                camera.position.set(player.model.position.x, player.model.position.y + 2.5, player.model.position.z);
                 orbitControls.minDistance = 0;
                 orbitControls.maxDistance = 0.6;
                 player.firstPerson = true;
@@ -432,11 +385,8 @@ function Level3Init() {
             }
         }
 
-        if (event.key.toLowerCase() == 'r') {
-            location.reload();
-        }
-
     }, false);
+
 
     //PAUSE CONTROLS AND CLOCK INITIALIZATION
     const clock = new THREE.Clock();
@@ -488,7 +438,7 @@ function Level3Init() {
                     battleMusic.pause();
                     levelMusic.pause();
                 }
-
+                
                 //play battle music when enemy is close
                 if(player.model.position.distanceTo(enemy.model.position) < 20 && levelMusic.isPlaying) {
                     levelMusic.pause();
@@ -509,37 +459,6 @@ function Level3Init() {
             }
         }
 
-        rainGeo.vertices.forEach(p => {
-            p.velocity -= 0.1 + Math.random() * 0.1;
-            p.y += p.velocity;
-            if (p.y < -100) {
-                p.y = 100;
-                p.velocity = 0;
-            }
-        });
-
-        rainGeo.verticesNeedUpdate = true;       //rain animation
-
-        // rainGeo.vertices.forEach(p => {
-        //     p.velocity -= 0.1+ Math.random()*0.1;
-        //     p.y += p.velocity;
-        //     if (p.y < -200){
-        //         p.y = 200;
-        //         p.velocity =0;
-        //     }
-        // });
-
-        // rainGeo.verticesNeedUpdate =true;       //rain animation
-        // rain.rotation.y += 0.002;
-        //flash and thundering
-        if (Math.random() < 0.93 || flash.power > 100) {
-            if (flash.power < 100) {
-                flash.position.set(Math.random() * 400, 300 + Math.random() * 200, 100);
-            }
-            flash.power = 50 + Math.random() * 500;
-        }
-
-
         orbitControls.update();
         renderer.render(scene, camera);
         composer.render();
@@ -548,6 +467,7 @@ function Level3Init() {
     document.body.appendChild(renderer.domElement);
     document.body.appendChild(renderer2.domElement);
     animate();
+
 
 
     //HELPER FUNCTIONS
@@ -559,25 +479,13 @@ function Level3Init() {
     }
     window.addEventListener('resize', onWindowResize);
 
+
     //LIGHTS
     function mainLighting() {
         //ambient light
-        scene.add(new THREE.AmbientLight(0xffffff, 0.4));
-
-        //directional light
-        const dirLight = new THREE.DirectionalLight(0xDD8B41, 0.8);
-        dirLight.position.set(-120, 80, 0);
-        dirLight.castShadow = true;
-        dirLight.shadow.camera.top = 50;
-        dirLight.shadow.camera.bottom = - 50;
-        dirLight.shadow.camera.left = - 50;
-        dirLight.shadow.camera.right = 50;
-        dirLight.shadow.camera.near = 0.1;
-        dirLight.shadow.camera.far = 200;
-        dirLight.shadow.mapSize.width = 1024;
-        dirLight.shadow.mapSize.height = 1024;
-        scene.add(dirLight);
+        scene.add(new THREE.AmbientLight(0xffffff, 0.2));
     }
+
 
     //REPEATING TEXTURES
     function wrapAndRepeatTextureFloor(map) {
@@ -597,12 +505,13 @@ function Level3Init() {
         map.repeat.y = 3;
     }
 
+
     //FLOOR
     function floor() {
         //textures
         const textureLoader = new THREE.TextureLoader();
         //const texture = textureLoader.load("./resources/textures/floors/placeholder.png");
-        const texture = textureLoader.load("./resources/textures/floors/gravel.jpg");
+        const texture = textureLoader.load("./resources/textures/floors/ground_stone.jpg");
 
         //dimensions
         const WIDTH = 100;
@@ -612,6 +521,7 @@ function Level3Init() {
         const geometry = new THREE.BoxGeometry(WIDTH, HEIGHT, LENGTH);
         const material = new THREE.MeshStandardMaterial({ map: texture });
         wrapAndRepeatTextureFloor(material.map);
+
 
         //mesh
         const meshFloor = new THREE.Mesh(geometry, material);
@@ -627,6 +537,7 @@ function Level3Init() {
         var collider = RAPIER.ColliderDesc.cuboid(WIDTH * 0.5, HEIGHT * 0.5, LENGTH * 0.5);
         world.createCollider(collider, rigidBody);
     }
+
 
     //WALLS
     function wall(startPoint, endPoint) {
@@ -651,49 +562,53 @@ function Level3Init() {
         world.createCollider(collider, rigidBody);
     }
 
+    const spotlight = new THREE.SpotLight(0xffffff);
+    spotlight.intesity = 50;
+    spotlight.angle = Math.PI / 8;
+    spotlight.penumbra = 0.1;
+    //spotlight.decay = 20;
+    spotlight.distance = 600;
 
+    camera.add(spotlight);
+    spotlight.castShadow = true;
+    spotlight.shadow.mapSize.width = 20;
+    spotlight.shadow.mapSize.height = 20;
+    spotlight.shadow.camera.near = 1;
+    spotlight.shadow.camera.far = 0.1;
+    spotlight.shadow.camera.fov = 3;
+    spotlight.shadow.focus = 1;
 
-    //Water feature
-    function waterFeature() {
-        //water geometry shape
-        const waterGeometry = new THREE.CircleGeometry(6, 32);
+    spotlight.shadow.camera.near = 10;
+    spotlight.shadow.camera.far = 1;
+    spotlight.shadow.camera.fov = 1;
 
-        //flow map used to navigate the direction on water flow
-        const flowTextureLoader = new THREE.TextureLoader();
-        const flowMap = flowTextureLoader.load('Resources/textures/water/flowmap.jpeg');
+    camera.add(spotlight.target);
+    spotlight.target.position.y = 1;
+    spotlight.target.position.z = -3;
+    scene.add(camera);
 
-        //properties for water feature
-        const water1 = new Water(waterGeometry, {
-            scale: 1,
-            color: 0x14c4ff,
-            textureWidth: 256,
-            textureHeight: 256,
-            flowMap: flowMap,
+    //TORCHES
+    //The light emitted from the torch
+    function torch(lightPos, side) {
+        //mesh
+        var model = torchModel.clone();
+        //model.rotation.y = Math.PI / 2;
+        if (side == "left") {
+            model.rotation.y = Math.PI / 2;
+        }
+        else if (side == "right") {
+            model.rotation.y = -Math.PI / 2;
+        }
+        else {
+            model.rotation.y = 0;
+        }
+        model.position.set(lightPos.x, lightPos.y, lightPos.z);
+        scene.add(model);
 
-        });
-
-        //setting featurre position//setting featurre position
-        water1.position.y = 0.2;
-        water1.position.x = -8;
-        water1.position.z = 23;
-        water1.rotation.x = Math.PI * - 0.5;
-
-        const water2 = new Water(waterGeometry, {
-            scale: 1,
-            color: 0x14c4ff,
-            textureWidth: 256,
-            textureHeight: 256,
-            flowMap: flowMap,
-
-        });
-
-        water2.position.y = 0.2;
-        water2.position.x = 40;
-        water2.position.z = -40;
-        water2.rotation.x = Math.PI * - 0.5;
-
-        scene.add(water1);
-        scene.add(water2);
+        //light colour and intensity
+        const light = new THREE.PointLight('orange', 3, 10, 2);
+        light.castShadow = false;
+        light.position.copy(lightPos);
+        scene.add(light);
     }
 }
-

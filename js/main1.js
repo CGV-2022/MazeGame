@@ -1,7 +1,7 @@
-import {Level0} from './Levels/Level0.js';
-import {Level1} from './Levels/Level1.js'; //placeholder for when they are added
-import {Level2} from './Levels/Level2.js';
+import {Level1} from './Levels/Level1.js';
+import {Level2} from './Levels/Level2.js'; //placeholder for when they are added
 import {Level3} from './Levels/Level3.js';
+import {Level4} from './Levels/Level4.js';
 
 
 document.getElementById("btnMainP").onclick = function () {
@@ -30,7 +30,7 @@ document.getElementById("btnMainR").onclick = function () {
 
 //go straight to certain level without having to go through menu
 removeMenu();
-Level0();
+Level1();
 
 //need to add the menu items back when player exits level
 function generateMenu() {

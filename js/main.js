@@ -1,14 +1,14 @@
-import {Level0} from './Levels/Level0.js';
-import {Level1} from './Levels/Level1.js'; //placeholder for when they are added
+import {Level1} from './Levels/Level1.js';
 import {Level2} from './Levels/Level2.js';
 import {Level3} from './Levels/Level3.js';
+import {Level4} from './Levels/Level4.js';
 
 
 //document.getElementById("0").addEventListener("click", (event) => {
   //  removeMenu2();
     //Level0();
         
-//}, false);
+//}, false); 
 document.getElementById("0").onclick = function () {
     removeMenu2();
     togglePopup();
@@ -16,17 +16,17 @@ document.getElementById("0").onclick = function () {
 
 document.getElementById("1").onclick = function () {
     removeMenu2();
-    Level1();
+    Level2();
 }
 
 document.getElementById("2").onclick = function () {
     removeMenu2();
-    Level2();
+    Level3();
 }
 
 document.getElementById("3").onclick = function () {
     removeMenu2();
-    Level3();
+    Level4();
 }
 
 function togglePopup(){
@@ -40,13 +40,13 @@ function closePopup(){
 
 document.getElementById("closePopup").addEventListener("click", (event) => {
     closePopup();
-    Level0();
+    Level1();
 
 }, false);
 
 document.getElementById("3").addEventListener("click", (event) => {
     removeMenu();
-    Level3();
+    Level4();
 
 }, false);
 
