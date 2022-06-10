@@ -490,6 +490,11 @@ function Level3Init() {
                     levelMusic.pause();
                 }
 
+                //if spawn point must change when player reaches a certain location
+                if (player.model.position.z < -50) {
+                    player.spawnPoint.set(0, 0.9, -52);
+                }
+
                 //play battle music when enemy is close
                 if(player.model.position.distanceTo(enemy.model.position) < 20 && levelMusic.isPlaying) {
                     levelMusic.pause();
