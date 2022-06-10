@@ -8,9 +8,9 @@ import RAPIER from 'https://cdn.skypack.dev/@dimforge/rapier3d-compat';
 import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.118/examples/jsm/controls/OrbitControls.js';
 import { FBXLoader } from 'https://cdn.jsdelivr.net/npm/three@0.118.1/examples/jsm/loaders/FBXLoader.js';
 
-import { KeyDisplay } from '/js/KeyboardUtility.js';
-import { Player } from '/js/Player.js';
-import { Enemy } from '/js/Enemy.js';
+import { KeyDisplay } from '../KeyboardUtility.js';
+import { Player } from '../Player.js';
+import { Enemy } from '../Enemy.js';
 
 
 export function Level1() {
