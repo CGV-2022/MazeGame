@@ -55,7 +55,7 @@ function Level4Init() {
     const scene = new THREE.Scene();
     //Skybox
     const loaderSky = new THREE.CubeTextureLoader();
-    loaderSky.setPath('./Resources/textures/skyboxes/Level4/');
+    loaderSky.setPath('Resources/textures/skyboxes/Level4/');
     const texture = loaderSky.load([
         'px.png',
         'nx.png',
@@ -142,7 +142,7 @@ function Level4Init() {
     //Walls
     //texture
     const textureLoader = new THREE.TextureLoader();
-    const brick = textureLoader.load("./resources/textures/walls/stone_wall.jpg");
+    const brick = textureLoader.load("Resources/textures/walls/stone_wall.jpg");
     const materialWall = new THREE.MeshStandardMaterial({ map: brick, side: THREE.DoubleSide });
     wrapAndRepeatTextureWall(materialWall.map);
 
@@ -200,7 +200,7 @@ function Level4Init() {
     }
 
     const loaderTorch = new FBXLoader(managerTorch);
-    loaderTorch.setPath('./Resources/models/Torch/');
+    loaderTorch.setPath('Resources/models/Torch/');
     loaderTorch.load('Torch.fbx', (fbx) => {
         const model = fbx;
         fbx.scale.setScalar(0.02);
@@ -213,7 +213,7 @@ function Level4Init() {
     //player model with animations
     var player;
     const loaderPlayer = new FBXLoader();
-    loaderPlayer.setPath('./Resources/models/Rosales/');
+    loaderPlayer.setPath('Resources/models/Rosales/');
 
     loaderPlayer.load('Kachujin_G_Rosales.fbx', (fbx) => {
         //mesh
@@ -258,7 +258,7 @@ function Level4Init() {
 
         //load animations
         const loaderAnimations = new FBXLoader(manager);
-        loaderAnimations.setPath('./Resources/models/Rosales/');
+        loaderAnimations.setPath('Resources/models/Rosales/');
         loaderAnimations.load('Idle.fbx', (a) => { OnLoad('Idle', a); });
         loaderAnimations.load('Walk.fbx', (a) => { OnLoad('Walk', a); });
         loaderAnimations.load('Run.fbx', (a) => { OnLoad('Run', a); });
@@ -285,7 +285,7 @@ function Level4Init() {
     //enemy model with animations
     var enemy;
     const loaderEnemy = new FBXLoader();
-    loaderEnemy.setPath('./Resources/models/Paladin/');
+    loaderEnemy.setPath('Resources/models/Paladin/');
 
     loaderEnemy.load('WProp_J_Nordstrom.fbx', (fbx) => {
         //mesh
@@ -312,7 +312,7 @@ function Level4Init() {
 
         //load animations
         const loaderAnimations = new FBXLoader();
-        loaderAnimations.setPath('./Resources/models/Paladin/');
+        loaderAnimations.setPath('Resources/models/Paladin/');
         loaderAnimations.load('Idle.fbx', (a) => { OnLoad('Idle', a); });
         loaderAnimations.load('Walk.fbx', (a) => { OnLoad('Walk', a); });
         loaderAnimations.load('Slash.fbx', (a) => { OnLoad('Slash', a); });
@@ -510,8 +510,8 @@ function Level4Init() {
     function floor() {
         //textures
         const textureLoader = new THREE.TextureLoader();
-        //const texture = textureLoader.load("./resources/textures/floors/placeholder.png");
-        const texture = textureLoader.load("./resources/textures/floors/ground_stone.jpg");
+        //const texture = textureLoader.load("Resources/textures/floors/placeholder.png");
+        const texture = textureLoader.load("Resources/textures/floors/ground_stone.jpg");
 
         //dimensions
         const WIDTH = 100;
